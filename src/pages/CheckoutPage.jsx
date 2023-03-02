@@ -9,7 +9,8 @@ import {
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { InputComponent } from "../components/InputField";
+import { InputComponent } from "../components/UI-components/InputField";
+
 import { states } from "../data/state.json";
 import { getOrderSummary } from "../redux/billing";
 

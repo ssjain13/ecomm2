@@ -14,10 +14,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import { FaShoppingCart, FaHome } from "react-icons/fa";
 import { BiLogIn } from "react-icons/bi";
-import { IconButton } from "./IconButton";
+
 import "../styles/main.style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/user";
+import { IconButton } from "./UI-components/IconButton";
 
 export const Pageheader = () => {
   let location = useLocation();

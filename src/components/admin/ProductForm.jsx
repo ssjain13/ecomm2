@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { updateProduct } from "../../redux/product";
+import { CancelCustomBtn, CustomBtn } from "../UI-components/CustomBtn";
 
 export const ProductForm = () => {
   const location = useLocation();
@@ -38,8 +39,20 @@ export const ProductForm = () => {
   const dispatch = useDispatch();
 
   const handleCreate = (data) => {
-    
-  }
+    toast({
+      title: `Product created successfully`,
+      status: "success",
+      duration: 1000,
+    });
+
+    setTimeout(() => {
+      navigate("/admin");
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    navigate("/admin");
+  };
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -67,7 +80,7 @@ export const ProductForm = () => {
   };
   return (
     product && (
-      <Box>
+      <Box ml="15px">
         <FormControl>
           <FormLabel>Title</FormLabel>
           <Input value={product.title} name="title" onChange={handleChange} />
@@ -86,10 +99,11 @@ export const ProductForm = () => {
             onChange={handleChange}
           />
           {mode === "edit" ? (
-            <Button onClick={handleUpdate}>Update</Button>
+            <CustomBtn handle={handleUpdate} text="Update" />
           ) : (
-            <Button onClick={handleCreate}>Create</Button>
+            <CustomBtn handle={handleCreate} text="Create" />
           )}
+         <CancelCustomBtn handle={handleCancel} text="Cancel" />
         </FormControl>
       </Box>
     )
