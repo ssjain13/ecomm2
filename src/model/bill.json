@@ -1,0 +1,10 @@
+{
+    "billInfo": {
+        "id": "",
+        "invoiceNumber": "",
+        "userid": "",
+        "amount": "",
+        "items": [],
+        "paymentStatus": ""
+    }
+}

@@ -1,0 +1,17 @@
+.cart {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.badge {
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  position: relative;
+  top: -50px;
+  right: -20px;
+  width: 13px;
+  height: 30px;
+  padding-left: 14px;
+  color: #d53f8c;
+}

@@ -1,0 +1,13 @@
+{
+    "user": {
+        "id": "",
+        "fname": "",
+        "lname": "",
+        "email": "",
+        "phone": "",
+        "address": "",
+        "country": "",
+        "state": "",
+        "city": ""
+    }
+}
