@@ -13,6 +13,7 @@ import { Login } from "./pages/Login";
 import { SuccessPage } from "./pages/SuccessPage";
 import { Inventory } from "./pages/Inventory";
 import { ProductForm } from "./components/admin/ProductForm";
+import { CategoryForm } from "./components/admin/CategoryForm";
 
 function App() {
   const { categories } = useSelector((state) => state.categories);
@@ -41,6 +42,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />}>
         </Route>
           <Route path="/create" element={<Inventory />} />
+          <Route path="/createCategory" element={<CategoryForm />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/product/edit" element={<ProductForm />} />

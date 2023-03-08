@@ -32,6 +32,7 @@ export const productSlice = createSlice({
       p.title = action.payload.title;
       p.description = action.payload.description;
       p.price = action.payload.price;
+      p.category= action.payload.category;
     },
     deleteProduct: (state, action) => {},
   },

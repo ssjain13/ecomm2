@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCategories } from "../api";
+import { fetchCategories, saveCategory } from "../api";
 
 const categorySlice = createSlice({
   name: "categories",
@@ -17,8 +17,18 @@ const categorySlice = createSlice({
       state.loading = false;
       state.error = true;
     },
+    [saveCategory.pending]: (state) => {
+      state.loading = true;
+    },
+    [saveCategory.fulfilled]: (state, action) => {
+      state.categories.push(action.payload);
+      state.loading = false;
+    },
+    [saveCategory.rejected]: (state) => {
+      state.loading = false;
+      state.error = true;
+    },
   },
 });
 
-
-export default categorySlice.reducer
+export default categorySlice.reducer;

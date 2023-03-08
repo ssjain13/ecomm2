@@ -17,8 +17,8 @@ export const Filters = ({ categories }) => {
 
   const options = categories.map((category) => {
     return (
-      <option value={category} key={category}>
-        {category}
+      <option value={category.name} key={category.id}>
+        {category.name}
       </option>
     );
   });

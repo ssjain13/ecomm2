@@ -24,7 +24,8 @@ export const Pageheader = () => {
   let location = useLocation();
 
   const navigate = useNavigate();
-
+  const {username} = useSelector((state)=> state.user);
+  
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -58,15 +59,20 @@ export const Pageheader = () => {
         )}
 
         {location.pathname === "/admin" && (
-          <Button
-            leftIcon={<BiLogIn />}
-            mr="10px"
-            mt="10px"
-            mb="10px"
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
+          <Flex alignItems={"center"}>
+            <Box mr="10px">
+              <Text>Welcome {username}</Text>
+            </Box>
+            <Button
+              leftIcon={<BiLogIn />}
+              mr="10px"
+              mt="10px"
+              mb="10px"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </Flex>
         )}
 
         {location.pathname === "/ecomm2/" && (

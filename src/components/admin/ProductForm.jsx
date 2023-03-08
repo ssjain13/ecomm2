@@ -5,6 +5,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  Select,
   Text,
   Textarea,
   useToast,
@@ -17,21 +18,21 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { updateProduct } from "../../redux/product";
 import { CancelCustomBtn, CustomBtn } from "../UI-components/CustomBtn";
+import { BiCaretDown } from "react-icons/bi";
 
 export const ProductForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const productData = location.state;
-  const [product, setProductData] = useState(productData);
+  const data = location.state;
+  const [product, setProduct] = useState(data.product);
   const toast = useToast();
   const [mode, setMode] = useState("create");
   useEffect(() => {
-    console.log(data);
-    if (productData) {
+    if (data) {
       setMode("edit");
     } else {
-      setProductData(data);
+      setProduct(data.product);
     }
     console.log(product);
   }, []);
@@ -39,6 +40,8 @@ export const ProductForm = () => {
   const dispatch = useDispatch();
 
   const handleCreate = (data) => {
+
+    console.log(product)
     toast({
       title: `Product created successfully`,
       status: "success",
@@ -56,8 +59,8 @@ export const ProductForm = () => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
-    setProductData((prevalue) => {
+    
+    setProduct((prevalue) => {
       return {
         ...prevalue,
         [name]: value,
@@ -66,8 +69,8 @@ export const ProductForm = () => {
   };
 
   const handleUpdate = () => {
-    dispatch(updateProduct(product));
-
+   dispatch(updateProduct(product));
+  console.log(product)
     toast({
       title: `Product updated successfully`,
       status: "success",
@@ -78,6 +81,16 @@ export const ProductForm = () => {
       navigate("/admin");
     }, 2000);
   };
+  
+  const options = data.categories.map((category) => {
+    return (
+      <option value={category.name} key={category.id}>
+        {category.name}
+      </option>
+    );
+  });
+
+  
   return (
     product && (
       <Box ml="15px">
@@ -93,17 +106,24 @@ export const ProductForm = () => {
           <FormLabel>Price</FormLabel>
           <Input value={product.price} name="price" onChange={handleChange} />
           <FormLabel>Category</FormLabel>
-          <Input
-            value={product.category}
-            name="category"
+          <Select
+            width="300px"
+            icon={<BiCaretDown />}
+            mr="10px"
+            variant="filled"
             onChange={handleChange}
-          />
+            name="category"
+            value = {product.category}
+            
+          >
+            {options}
+          </Select>
           {mode === "edit" ? (
             <CustomBtn handle={handleUpdate} text="Update" />
           ) : (
             <CustomBtn handle={handleCreate} text="Create" />
           )}
-         <CancelCustomBtn handle={handleCancel} text="Cancel" />
+          <CancelCustomBtn handle={handleCancel} text="Cancel" />
         </FormControl>
       </Box>
     )
