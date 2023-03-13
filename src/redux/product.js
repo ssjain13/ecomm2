@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchProducts } from "../api";
+import {
+  fetchProducts,
+  saveProduct,
+  deleteProduct,
+} from "../api";
 
 export const productSlice = createSlice({
   name: "product",
@@ -15,26 +19,30 @@ export const productSlice = createSlice({
         const data = state.products.filter(
           (product) => product.category === action.payload
         );
-        state.filteredData = data;
+        if (data.length > 0) {
+          state.filteredData = data;
+        } else {
+          state.filteredData = [];
+        }
       } else {
-        state.filteredData = [];
+        state.filteredData = state.products;
       }
     },
-    saveProduct: (state, action) => {
-      state.products.push(action.payload);
-      //Update stock model data
-      //Increment qty
+
+    deleteProductById: (state, action) => {
+      state.loading = false;
+      console.log(action.payload);
+      state.products = state.products.filter((i) => i.id !== action.payload);
     },
-    updateProduct: (state, action) => {
+    updateProductAction: (state, action) => {
       const p = state.products.find(
         (product) => product.id === action.payload.id
       );
       p.title = action.payload.title;
       p.description = action.payload.description;
       p.price = action.payload.price;
-      p.category= action.payload.category;
+      p.category = action.payload.category;
     },
-    deleteProduct: (state, action) => {},
   },
   extraReducers: {
     [fetchProducts.pending]: (state) => {
@@ -43,15 +51,36 @@ export const productSlice = createSlice({
     [fetchProducts.fulfilled]: (state, action) => {
       state.loading = false;
       state.products = action.payload;
-      state.filterProducts = [];
+      state.filteredData = action.payload;
     },
     [fetchProducts.rejected]: (state) => {
+      state.loading = false;
+      state.error = true;
+    },
+    [saveProduct.pending]: (state) => {
+      state.loading = true;
+    },
+    [saveProduct.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.products.push(action.payload);
+    },
+    [saveProduct.rejected]: (state) => {
+      state.loading = false;
+      state.error = true;
+    },
+    [deleteProduct.pending]: (state) => {
+      state.loading = true;
+    },
+    [deleteProduct.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.products = state.products.filter((i) => i.id !== action.payload.id);
+    },
+    [deleteProduct.rejected]: (state) => {
       state.loading = false;
       state.error = true;
     },
   },
 });
 
-export const { filterProducts, saveProduct, updateProduct, deleteProduct } =
-  productSlice.actions;
+export const { filterProducts, deleteProductById } = productSlice.actions;
 export default productSlice.reducer;

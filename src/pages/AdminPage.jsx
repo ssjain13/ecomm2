@@ -1,7 +1,8 @@
 import { Box, Button, ButtonGroup, Text } from "@chakra-ui/react";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { fetchProducts } from "../api";
 import { Dashboard } from "../components/admin/Dashboard";
 
 export const AdminPage = () => {
@@ -9,12 +10,19 @@ export const AdminPage = () => {
   const navigate = useNavigate();
 
   const { categories } = useSelector((state) => state.categories);
+  const dispatch = useDispatch();
   const createInventory = () => {
-    navigate("/create", { state: categories });
+    navigate("/create", { state: { categories: categories } });
   };
 
   const createCategory = () => {
     navigate("/createCategory");
+  };
+  const viewProducts = () => {
+    navigate("/viewProducts");
+  };
+  const viewCategories = () => {
+    navigate("/viewCategories");
   };
   return role && role === "admin" ? (
     <Box>
@@ -23,13 +31,13 @@ export const AdminPage = () => {
       </Text>
 
       <ButtonGroup mr="10">
-        <Button onClick={createInventory}>Create inventory</Button>
-        <Button onClick={createCategory}>Create Category</Button>
-        <Button>View inventory</Button>
-        <Button>View Users</Button>
+        <Button onClick={createInventory}>Add Product</Button>
+        <Button onClick={createCategory}>Add Category</Button>
+        <Button onClick={viewCategories}>View Categories</Button>
+        <Button onClick={viewProducts}>View Products</Button>
       </ButtonGroup>
 
-      <Dashboard categories={categories} />
+   
     </Box>
   ) : (
     <div>You dont have permission to access this page</div>

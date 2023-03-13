@@ -16,32 +16,50 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
-import { updateProduct } from "../../redux/product";
 import { CancelCustomBtn, CustomBtn } from "../UI-components/CustomBtn";
 import { BiCaretDown } from "react-icons/bi";
+import { saveProduct, updateProduct } from "../../api";
 
+const initialState = {
+  id: "",
+  title: "",
+  description: "",
+  price: "",
+  category: "",
+  image: "",
+  rating: {
+    count: 0,
+    rate: 0,
+  },
+};
 export const ProductForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
   const data = location.state;
-  const [product, setProduct] = useState(data.product);
+  const [product, setProduct] = useState(
+    data.product ? data.product : initialState
+  );
   const toast = useToast();
+  console.log(data);
+
   const [mode, setMode] = useState("create");
+  console.log(mode);
   useEffect(() => {
-    if (data) {
+    if (data.product) {
       setMode("edit");
     } else {
-      setProduct(data.product);
+      setProduct(product);
     }
     console.log(product);
   }, []);
 
   const dispatch = useDispatch();
 
-  const handleCreate = (data) => {
+  const handleCreate = (e) => {
+    dispatch(saveProduct(product));
+    console.log(product);
 
-    console.log(product)
     toast({
       title: `Product created successfully`,
       status: "success",
@@ -59,7 +77,7 @@ export const ProductForm = () => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    
+
     setProduct((prevalue) => {
       return {
         ...prevalue,
@@ -69,8 +87,8 @@ export const ProductForm = () => {
   };
 
   const handleUpdate = () => {
-   dispatch(updateProduct(product));
-  console.log(product)
+    dispatch(updateProduct(product));
+    console.log(product);
     toast({
       title: `Product updated successfully`,
       status: "success",
@@ -81,7 +99,7 @@ export const ProductForm = () => {
       navigate("/admin");
     }, 2000);
   };
-  
+
   const options = data.categories.map((category) => {
     return (
       <option value={category.name} key={category.id}>
@@ -90,7 +108,6 @@ export const ProductForm = () => {
     );
   });
 
-  
   return (
     product && (
       <Box ml="15px">
@@ -104,7 +121,7 @@ export const ProductForm = () => {
             onChange={handleChange}
           />
           <FormLabel>Price</FormLabel>
-          <Input value={product.price} name="price" onChange={handleChange} />
+          <Input value={product.price} name="price" type="number" onChange={handleChange} />
           <FormLabel>Category</FormLabel>
           <Select
             width="300px"
@@ -113,11 +130,15 @@ export const ProductForm = () => {
             variant="filled"
             onChange={handleChange}
             name="category"
-            value = {product.category}
-            
+            value={product.category}
           >
             {options}
           </Select>
+
+          {mode !== "edit" && (
+            <Input name="image" value={product.image} onChange={handleChange} />
+          )}
+
           {mode === "edit" ? (
             <CustomBtn handle={handleUpdate} text="Update" />
           ) : (

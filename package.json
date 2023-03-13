@@ -9,7 +9,8 @@
     "build": "vite build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "concurrently \"npm run dev\" \"cd ../server && npm run start\""
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.15",
@@ -23,6 +24,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@stripe/react-stripe-js": "^1.16.2",
     "@stripe/stripe-js": "^1.46.0",
+    "concurrently": "^7.6.0",
     "formik": "^2.2.9",
     "framer-motion": "^8.0.2",
     "react": "^18.2.0",

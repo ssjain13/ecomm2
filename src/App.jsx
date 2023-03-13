@@ -14,6 +14,8 @@ import { SuccessPage } from "./pages/SuccessPage";
 import { Inventory } from "./pages/Inventory";
 import { ProductForm } from "./components/admin/ProductForm";
 import { CategoryForm } from "./components/admin/CategoryForm";
+import { Dashboard } from "./components/admin/Dashboard";
+import { CategoryDashboard } from "./components/admin/CategoryDashboard";
 
 function App() {
   const { categories } = useSelector((state) => state.categories);
@@ -39,10 +41,19 @@ function App() {
           <Route path="/checkout" element={<ShoppingAccordion />}></Route>
         )}
         <Route path="/success" element={<SuccessPage />} />
-        <Route path="/admin" element={<AdminPage />}>
-        </Route>
-          <Route path="/create" element={<Inventory />} />
-          <Route path="/createCategory" element={<CategoryForm />} />
+        <Route path="/admin" element={<AdminPage />}></Route>
+        <Route
+          path="/viewProducts"
+          element={<Dashboard categories={categories} />}
+        />
+
+        <Route
+          path="/viewCategories"
+          element={<CategoryDashboard categories={categories} />}
+        />
+
+        <Route path="/create" element={<Inventory />} />
+        <Route path="/createCategory" element={<CategoryForm />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/product/edit" element={<ProductForm />} />
@@ -53,11 +64,7 @@ function App() {
             <Box>
               <Filters categories={categories} />
               {loading && <Progress size="xs" isIndeterminate mt={"30px"} />}
-              {!loading && (
-                <ProductGrid
-                  products={filteredData.length > 0 ? filteredData : products}
-                />
-              )}
+              {!loading && <ProductGrid products={filteredData} />}
               {error && (
                 <Alert status="error">
                   <AlertIcon />
