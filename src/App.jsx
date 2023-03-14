@@ -61,7 +61,7 @@ function App() {
         <Route path="/category/edit" element={<CategoryForm />} />
 
         <Route
-          path="/ecomm2/"
+          path="/"
           element={
             <Box>
               <Filters categories={categories} />

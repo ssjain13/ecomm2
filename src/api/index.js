@@ -2,11 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const baseURL = "https://fakestoreapi.com";
 
-const backend_api = "http://localhost:9000";
+const backend_api = process.env.PROD_URL
+
 
 export const fetchProducts = createAsyncThunk(
   "products/getAll",
   async (thunkAPI) => {
+    
     const res = await fetch(`${backend_api}/fetchProducts`)
       .then((data) => {
         return data.json();

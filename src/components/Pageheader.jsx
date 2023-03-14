@@ -75,7 +75,7 @@ export const Pageheader = () => {
           </Flex>
         )}
 
-        {location.pathname === "/ecomm2/" && (
+        {location.pathname === "/" && (
           <>
             <div className="Nav">
               <div className="cart" onClick={() => navigate("/cart")}>
@@ -89,7 +89,7 @@ export const Pageheader = () => {
         )}
 
         {location.pathname !== "/" && (
-          <div className="cart" onClick={() => navigate("/ecomm2/")}>
+          <div className="cart" onClick={() => navigate("/")}>
             <IconButton icon={<FaHome />} />
           </div>
         )}

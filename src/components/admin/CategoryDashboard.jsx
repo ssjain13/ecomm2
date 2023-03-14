@@ -10,6 +10,7 @@ import {
   Box,
   Heading,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +22,7 @@ import { deleteCategory, fetchCategories, fetchProductsCount } from "../../api";
 
 export const CategoryDashboard = ({ categories }) => {
   const dispatch = useDispatch();
-  const { productCategoryMap } = useSelector((state) => state.product);
+  const { productCategoryMap, loading } = useSelector((state) => state.product);
   const navigate = useNavigate();
   const updateCategory = (category) => {
     navigate("/category/edit", {
@@ -52,7 +53,8 @@ export const CategoryDashboard = ({ categories }) => {
 
   return (
     <Box>
-      {categories.length < 1 ? (
+      {loading && <Spinner/>}
+      {!loading && categories.length < 1 ? (
         <Heading
           className="product_msg0"
           style={{
