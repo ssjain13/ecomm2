@@ -24,7 +24,12 @@ import { MdDeleteForever } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router";
 import { ProductForm } from "./ProductForm";
-import { deleteProduct, fetchCategories, fetchProducts } from "../../api";
+import {
+  deleteProduct,
+  fetchCategories,
+  fetchProducts,
+  fetchProductsCount,
+} from "../../api";
 
 export const Dashboard = ({ categories }) => {
   const { title, category, price, rating } = data;
@@ -32,7 +37,7 @@ export const Dashboard = ({ categories }) => {
   const { products, loading, error, filteredData } = useSelector(
     (state) => state.product
   );
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {

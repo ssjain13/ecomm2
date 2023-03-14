@@ -35,37 +35,34 @@ const initialState = {
 export const ProductForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isDisable, setIsDisable] = useState(false);
 
   const data = location.state;
   const [product, setProduct] = useState(
     data.product ? data.product : initialState
   );
   const toast = useToast();
-  console.log(data);
 
   const [mode, setMode] = useState("create");
-  console.log(mode);
   useEffect(() => {
     if (data.product) {
       setMode("edit");
     } else {
       setProduct(product);
     }
-    console.log(product);
   }, []);
 
   const dispatch = useDispatch();
 
   const handleCreate = (e) => {
     dispatch(saveProduct(product));
-    console.log(product);
 
     toast({
       title: `Product created successfully`,
       status: "success",
       duration: 1000,
     });
-
+    setIsDisable(true);
     setTimeout(() => {
       navigate("/admin");
     }, 2000);
@@ -88,13 +85,13 @@ export const ProductForm = () => {
 
   const handleUpdate = () => {
     dispatch(updateProduct(product));
-    console.log(product);
+
     toast({
       title: `Product updated successfully`,
       status: "success",
       duration: 1000,
     });
-
+    setIsDisable(true);
     setTimeout(() => {
       navigate("/admin");
     }, 2000);
@@ -113,17 +110,30 @@ export const ProductForm = () => {
       <Box ml="15px">
         <FormControl>
           <FormLabel>Title</FormLabel>
-          <Input value={product.title} name="title" onChange={handleChange} />
+          <Input
+            value={product.title}
+            name="title"
+            onChange={handleChange}
+            disabled={isDisable}
+          />
           <FormLabel>Description</FormLabel>
           <Textarea
+            disabled={isDisable}
             value={product.description}
             name="description"
             onChange={handleChange}
           />
           <FormLabel>Price</FormLabel>
-          <Input value={product.price} name="price" type="number" onChange={handleChange} />
+          <Input
+            disabled={isDisable}
+            value={product.price}
+            name="price"
+            type="number"
+            onChange={handleChange}
+          />
           <FormLabel>Category</FormLabel>
           <Select
+            disabled={isDisable}
             width="300px"
             icon={<BiCaretDown />}
             mr="10px"
@@ -136,15 +146,32 @@ export const ProductForm = () => {
           </Select>
 
           {mode !== "edit" && (
-            <Input name="image" value={product.image} onChange={handleChange} />
+            <Input
+              name="image"
+              disabled={isDisable}
+              value={product.image}
+              onChange={handleChange}
+            />
           )}
 
           {mode === "edit" ? (
-            <CustomBtn handle={handleUpdate} text="Update" />
+            <CustomBtn
+              disabled={isDisable}
+              handle={handleUpdate}
+              text="Update"
+            />
           ) : (
-            <CustomBtn handle={handleCreate} text="Create" />
+            <CustomBtn
+              disabled={isDisable}
+              handle={handleCreate}
+              text="Create"
+            />
           )}
-          <CancelCustomBtn handle={handleCancel} text="Cancel" />
+          <CancelCustomBtn
+            disabled={isDisable}
+            handle={handleCancel}
+            text="Cancel"
+          />
         </FormControl>
       </Box>
     )

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCategories, saveCategory } from "../api";
+import { deleteCategory, fetchCategories, saveCategory, updateCategory } from "../api";
 
 const categorySlice = createSlice({
   name: "categories",
@@ -28,6 +28,12 @@ const categorySlice = createSlice({
       state.loading = false;
       state.error = true;
     },
+[deleteCategory.fulfilled]:(state, action)=>{
+  state.loading = false;
+  state.categories = state.categories.filter((i) => i.id !== action.payload.id);
+}
+
+   
   },
 });
 

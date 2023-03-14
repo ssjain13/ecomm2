@@ -30,6 +30,7 @@ function App() {
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchCategories());
+
   }, []);
 
   return (
@@ -57,6 +58,7 @@ function App() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/product/edit" element={<ProductForm />} />
+        <Route path="/category/edit" element={<CategoryForm />} />
 
         <Route
           path="/ecomm2/"

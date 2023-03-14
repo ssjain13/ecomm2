@@ -37,6 +37,7 @@ const cartSlice = createSlice({
       state.cartItems = [];
     },
   },
+  
 });
 
 export const { addToCart, removeFromCart, clearCart, increment, decrement } =

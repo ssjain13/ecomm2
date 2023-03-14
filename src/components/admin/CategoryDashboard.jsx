@@ -11,32 +11,43 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router";
+import { deleteCategory, fetchCategories, fetchProductsCount } from "../../api";
 
-const cat_product = {
-    category : "", 
-    count : 0
-}
 export const CategoryDashboard = ({ categories }) => {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.product);
-const navigate = useNavigate();
+  const { productCategoryMap } = useSelector((state) => state.product);
+  const navigate = useNavigate();
   const updateCategory = (category) => {
-    console.log("In update ");
+    navigate("/category/edit", {
+      state: { category: category },
+    });
   };
 
-  const onDelete = () => {
-    console.log("In delete ");
+  const onDelete = (category) => {
+    //  getCountOfProductsByCategory(category);
+    dispatch(deleteCategory(category.id));
   };
 
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
+
+  const getCount = (category) => {
+    const res = productCategoryMap.find((p) => p.category === category.name);
+
+    return res && res.productCount;
+  };
   const getCountOfProductsByCategory = (category) => {
-    
-
+    //API call which returns count of products in category provided.
+    const m = { product: "", count: 0 };
+    const final = [];
+    dispatch(fetchProductsCount(category.name));
   };
 
   return (
@@ -72,7 +83,7 @@ const navigate = useNavigate();
                 <Tr key={category.name}>
                   <Td>{category.name}</Td>
                   <Td>{category.description}</Td>
-
+                  <Td>{getCount(category)}</Td>
                   <Td>
                     <Button
                       leftIcon={<CiEdit />}

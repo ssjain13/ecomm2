@@ -18,6 +18,22 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
+export const fetchProductsCount = createAsyncThunk(
+  "products/fetchProductsCount",
+  async (category) => {
+    const res = await fetch(
+      `${backend_api}/getCountByCategory?` + new URLSearchParams({ category })
+    )
+      .then((data) => {
+        return data.json();
+      })
+      .catch((err) => {
+        return err;
+      });
+    return res;
+  }
+);
+
 export const saveCategory = createAsyncThunk(
   "categories/save",
   async (category) => {
@@ -70,6 +86,26 @@ export const updateProduct = createAsyncThunk(
           "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify(product),
+      });
+
+      return await data.json();
+    } catch (err) {
+      return err;
+    }
+  }
+);
+
+export const updateCategory = createAsyncThunk(
+  "categories/update",
+  async (category) => {
+    try {
+      const data = await fetch(`${backend_api}/updateCategory`, {
+        method: "PUT", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(category),
       });
 
       return await data.json();

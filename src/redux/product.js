@@ -3,6 +3,8 @@ import {
   fetchProducts,
   saveProduct,
   deleteProduct,
+  fetchProductsCount,
+  updateProduct,
 } from "../api";
 
 export const productSlice = createSlice({
@@ -12,6 +14,7 @@ export const productSlice = createSlice({
     loading: false,
     error: false,
     filteredData: [],
+    productCategoryMap: [],
   },
   reducers: {
     filterProducts: (state, action) => {
@@ -79,6 +82,11 @@ export const productSlice = createSlice({
       state.loading = false;
       state.error = true;
     },
+    [fetchProductsCount.fulfilled]: (state, action) => {
+      state.productCategoryMap.push(action.payload);
+    },
+
+   
   },
 });
 
