@@ -53,7 +53,7 @@ export const CategoryDashboard = ({ categories }) => {
 
   return (
     <Box>
-      {loading && <Spinner/>}
+      {loading && <Progress size="xs" isIndeterminate mt={"30px"} />}
       {!loading && categories.length < 1 ? (
         <Heading
           className="product_msg0"

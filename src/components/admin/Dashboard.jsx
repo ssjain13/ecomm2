@@ -11,6 +11,7 @@ import {
   Box,
   Heading,
   Text,
+  Progress,
 } from "@chakra-ui/react";
 
 import "../../styles/admin.style.css";
@@ -42,7 +43,7 @@ export const Dashboard = ({ categories }) => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-    dispatch(fetchCategories());
+    
   }, []);
   const navigate = useNavigate();
 
@@ -57,6 +58,7 @@ export const Dashboard = ({ categories }) => {
   };
   return (
     <Box>
+      {loading && <Progress size="xs" isIndeterminate mt={"30px"} />}
       {products.length < 1 ? (
         <Heading
           className="product_msg0"
