@@ -7,7 +7,7 @@ import "@fontsource/buenard";
 import "@fontsource/copse";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter , HashRouter} from "react-router-dom";
 import { AdminPage } from "./pages/AdminPage";
 import { Route, Routes } from "react-router";
 const colors = {
@@ -27,11 +27,11 @@ const theme = extendTheme({
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
+  <HashRouter>
     <Provider store={store}>
       <ChakraProvider theme={theme}>
         <App />
       </ChakraProvider>
     </Provider>
-  </BrowserRouter>
+  </HashRouter>
 );
