@@ -1,17 +1,16 @@
-import { Alert, Box, Button, Input } from "@chakra-ui/react";
+import { Alert, Box, Button, Input, Text } from "@chakra-ui/react";
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { loginUser } from "../redux/user";
+import { authenticate } from "../api";
 
 export const Login = () => {
   const [credentials, setCredentials] = useState({
-    username: "sonal",
-    password: "admin",
+    username: "sonal@abc.com",
+    password: "test123434",
   });
 
-  const { isSuccess } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,9 +28,8 @@ export const Login = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    dispatch(loginUser(credentials));
+    dispatch(authenticate(credentials));
     navigate("/admin");
-    
   };
 
   return (

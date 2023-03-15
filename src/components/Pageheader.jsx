@@ -13,7 +13,8 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { FaShoppingCart, FaHome } from "react-icons/fa";
-import { BiLogIn } from "react-icons/bi";
+import { BiLogIn,BiLogOut } from "react-icons/bi";
+import { HiUserPlus } from "react-icons/hi2";
 
 import "../styles/main.style.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,8 +25,8 @@ export const Pageheader = () => {
   let location = useLocation();
 
   const navigate = useNavigate();
-  const {username} = useSelector((state)=> state.user);
-  
+  const { username } = useSelector((state) => state.user);
+
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -47,15 +48,26 @@ export const Pageheader = () => {
       <Spacer />
       <ButtonGroup gap="2">
         {location.pathname !== "/admin" && (
-          <Button
-            leftIcon={<BiLogIn />}
-            mr="10px"
-            mt="10px"
-            mb="10px"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </Button>
+          <>
+            <Button
+              leftIcon={<BiLogIn />}
+              mr="10px"
+              mt="10px"
+              mb="10px"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </Button>
+            <Button
+              leftIcon={<HiUserPlus />}
+              mr="10px"
+              mt="10px"
+              mb="10px"
+              onClick={() => navigate("/login")}
+            >
+              Register
+            </Button>
+          </>
         )}
 
         {location.pathname === "/admin" && (
@@ -64,7 +76,7 @@ export const Pageheader = () => {
               <Text>Welcome {username}</Text>
             </Box>
             <Button
-              leftIcon={<BiLogIn />}
+              leftIcon={<BiLogOut />}
               mr="10px"
               mt="10px"
               mb="10px"

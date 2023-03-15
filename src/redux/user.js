@@ -1,29 +1,42 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { authenticate } from "../api";
 
 const userSlice = createSlice({
   name: "user",
-  initialState: { username: "", password: "", role: "user", isSuccess: false },
+  initialState: {
+    email:"",
+    displayName:"",
+    username: "",
+    password: "",
+    role: "user",
+    isSuccess: false,
+    token: "",
+    error: "",
+  },
   reducers: {
-    loginUser: (state, action) => {
-      state.username = action.payload.username;
-      state.password = action.payload.password;
-      if (state.username === "sonal" && state.password === "admin") {
-        state.role = "admin";
-        state.isSuccess = true;
-      } else {
-        state.role = "user";
-        state.isSuccess = true;
-      }
-    },
     logoutUser: (state, action) => {
-      state.password = "",
-        state.username = "",
-        state.role = "",
-        state.isSuccess = "false";
+      (state.password = ""),
+        (state.username = ""),
+        (state.role = ""),
+        (state.isSuccess = "false");
+    },
+  },
+  extraReducers: {
+    [authenticate.fulfilled]: (state, action) => {
+      state.token = action.payload.token;
+      state.isSuccess = true;
+      state.role = "admin";
+      state.error = "";
+      state.email = action.payload.email;
+      state.displayName = action.payload.displayName;
+    },
+    [authenticate.rejected]: (state, action) => {
+      state.isSuccess = false;
+      state.error = action.error.message;
     },
   },
 });
 
-export const { loginUser , logoutUser} = userSlice.actions;
+export const { logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;

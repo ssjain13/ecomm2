@@ -1,4 +1,13 @@
-import { Box, Button, ButtonGroup, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Box,
+  Button,
+  ButtonGroup,
+  Text,
+} from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -8,6 +17,7 @@ import { Dashboard } from "../components/admin/Dashboard";
 export const AdminPage = () => {
   const { role } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const { isSuccess, error } = useSelector((state) => state.user);
 
   const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
@@ -32,7 +42,7 @@ export const AdminPage = () => {
       });
   };
 
-  return role && role === "admin" ? (
+  return isSuccess && role === "admin" ? (
     <Box>
       <Text fontSize="2xl" align="center">
         Welcome to Admin
@@ -45,6 +55,12 @@ export const AdminPage = () => {
         <Button onClick={viewProducts}>View Products</Button>
       </ButtonGroup>
     </Box>
+  ) : error ? (
+    <Alert status="error">
+      <AlertIcon />
+      <AlertTitle>Login Error</AlertTitle>
+      <AlertDescription>{error}</AlertDescription>
+    </Alert>
   ) : (
     <div>You dont have permission to access this page</div>
   );
