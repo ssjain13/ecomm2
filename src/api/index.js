@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const baseURL = "https://fakestoreapi.com";
 
-//const backend_api = process.env.PROD_URL;
-const backend_api = "http://localhost:3030";
+const backend_api = process.env.PROD_URL;
+//const backend_api = "http://localhost:3030";
 
 export const authenticate = createAsyncThunk(
   "user/login",
