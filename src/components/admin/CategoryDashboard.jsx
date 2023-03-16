@@ -11,6 +11,11 @@ import {
   Heading,
   Text,
   Spinner,
+  Progress,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +27,9 @@ import { deleteCategory, fetchCategories, fetchProductsCount } from "../../api";
 
 export const CategoryDashboard = ({ categories }) => {
   const dispatch = useDispatch();
-  const { productCategoryMap, loading } = useSelector((state) => state.product);
+  const { productCategoryMap, loading, error } = useSelector(
+    (state) => state.product
+  );
   const navigate = useNavigate();
   const updateCategory = (category) => {
     navigate("/category/edit", {
@@ -68,47 +75,58 @@ export const CategoryDashboard = ({ categories }) => {
           No Categories!!
         </Heading>
       ) : (
-        <TableContainer>
-          <Table variant="simple">
-            <Thead>
-              <Tr className="table-heading">
-                <Td>Name</Td>
-                <Td>Description</Td>
+        !loading && (
+          <>
+            <TableContainer>
+              <Table variant="simple">
+                <Thead>
+                  <Tr className="table-heading">
+                    <Td>Name</Td>
+                    <Td>Description</Td>
 
-                <Td isNumeric>No. of Products</Td>
-                <Td></Td>
-              </Tr>
-            </Thead>
+                    <Td isNumeric>No. of Products</Td>
+                    <Td></Td>
+                  </Tr>
+                </Thead>
 
-            <Tbody>
-              {categories.map((category) => (
-                <Tr key={category.name}>
-                  <Td>{category.name}</Td>
-                  <Td>{category.description}</Td>
-                  <Td>{getCount(category)}</Td>
-                  <Td>
-                    <Button
-                      leftIcon={<CiEdit />}
-                      variant="ghost"
-                      onClick={() => updateCategory(category)}
-                      mt="10px"
-                      mr="10px"
-                    ></Button>
-                    <Button
-                      leftIcon={<RxCross2 />}
-                      variant="ghost"
-                      onClick={() => onDelete(category)}
-                      mt="10px"
-                      mr="10px"
-                    ></Button>
-                  </Td>
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+                <Tbody>
+                  {categories.map((category) => (
+                    <Tr key={category.name}>
+                      <Td>{category.name}</Td>
+                      <Td>{category.description}</Td>
+                      <Td>{getCount(category)}</Td>
+                      <Td>
+                        <Button
+                          leftIcon={<CiEdit />}
+                          variant="ghost"
+                          onClick={() => updateCategory(category)}
+                          mt="10px"
+                          mr="10px"
+                        ></Button>
+                        <Button
+                          leftIcon={<RxCross2 />}
+                          variant="ghost"
+                          onClick={() => onDelete(category)}
+                          mt="10px"
+                          mr="10px"
+                        ></Button>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
+            <Button onClick={() => navigate("/admin")}>Back</Button>
+          </>
+        )
       )}
-      <Button onClick={() => navigate("/admin")}>Back</Button>
+      {error && (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
     </Box>
   );
 };

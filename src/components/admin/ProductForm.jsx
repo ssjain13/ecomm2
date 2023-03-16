@@ -1,18 +1,6 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  Select,
-  Text,
-  Textarea,
-  useToast,
-} from "@chakra-ui/react";
-import { data } from "../../model/product.json";
+import { Box, FormControl, FormLabel, Input, Select, Textarea, useToast } from "@chakra-ui/react";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router";

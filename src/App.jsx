@@ -16,21 +16,19 @@ import { ProductForm } from "./components/admin/ProductForm";
 import { CategoryForm } from "./components/admin/CategoryForm";
 import { Dashboard } from "./components/admin/Dashboard";
 import { CategoryDashboard } from "./components/admin/CategoryDashboard";
+import { Register } from "./components/admin/Register";
 
 function App() {
-  const { categories } = useSelector((state) => state.categories);
-
+  const selectorData = useSelector((state) => state.categories);
   const { cartItems } = useSelector((state) => state.cart);
-
   const dispatch = useDispatch();
-  const { products, loading, error, filteredData } = useSelector(
+  const { loading, error, filteredData } = useSelector(
     (state) => state.product
   );
 
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchCategories());
-
   }, []);
 
   return (
@@ -45,18 +43,19 @@ function App() {
         <Route path="/admin" element={<AdminPage />}></Route>
         <Route
           path="/viewProducts"
-          element={<Dashboard categories={categories} />}
+          element={<Dashboard categories={selectorData.categories} />}
         />
 
         <Route
           path="/viewCategories"
-          element={<CategoryDashboard categories={categories} />}
+          element={<CategoryDashboard categories={selectorData.categories} />}
         />
 
         <Route path="/create" element={<Inventory />} />
         <Route path="/createCategory" element={<CategoryForm />} />
 
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/product/edit" element={<ProductForm />} />
         <Route path="/category/edit" element={<CategoryForm />} />
 
@@ -64,10 +63,14 @@ function App() {
           path="/"
           element={
             <Box>
-              <Filters categories={categories} />
-              {loading && <Progress size="xs" isIndeterminate mt={"30px"} />}
-              {!loading && <ProductGrid products={filteredData} />}
-              {error && (
+              <Filters categories={selectorData.categories} />
+              {loading && selectorData.loading && (
+                <Progress size="xs" isIndeterminate mt={"30px"} />
+              )}
+              {!loading && !selectorData.loading && (
+                <ProductGrid products={filteredData} />
+              )}
+              {error && selectorData.error && (
                 <Alert status="error">
                   <AlertIcon />
                   There was an error processing your request

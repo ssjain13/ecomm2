@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const baseURL = "https://fakestoreapi.com";
 
-const backend_api = process.env.PROD_URL;
-//const backend_api = "http://localhost:3030";
+//const backend_api = process.env.PROD_URL;
+const backend_api = "http://localhost:3030";
 
 export const authenticate = createAsyncThunk(
   "user/login",
@@ -30,6 +30,30 @@ export const authenticate = createAsyncThunk(
     }
   }
 );
+
+export const registerUser = createAsyncThunk("user/register", async (user) => {
+  try {
+    const res = await fetch(`${backend_api}/register`, {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    if (!res.ok) {
+      await res.json().then((data) => {
+        throw new Error(data.code);
+      });
+    }
+    return res.json();
+  } catch (err) {
+    return new Promise((resolve, reject) => {
+      reject(err);
+    });
+  }
+});
+
 export const fetchProducts = createAsyncThunk(
   "products/getAll",
   async (thunkAPI) => {

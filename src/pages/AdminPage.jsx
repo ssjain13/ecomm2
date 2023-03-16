@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Progress,
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
@@ -17,7 +18,7 @@ import { Dashboard } from "../components/admin/Dashboard";
 export const AdminPage = () => {
   const { role } = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const { isSuccess, error } = useSelector((state) => state.user);
+  const { isSuccess, error, loading } = useSelector((state) => state.user);
 
   const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
@@ -42,26 +43,33 @@ export const AdminPage = () => {
       });
   };
 
-  return isSuccess && role === "admin" ? (
+  return (
     <Box>
-      <Text fontSize="2xl" align="center">
-        Welcome to Admin
-      </Text>
+      {loading && <Progress size="xs" isIndeterminate mt={"30px"} />}
+      {!loading && isSuccess && role === "admin" && (
+        <>
+          <Text fontSize="2xl" align="center">
+            Welcome to Admin
+          </Text>
 
-      <ButtonGroup mr="10">
-        <Button onClick={createInventory}>Add Product</Button>
-        <Button onClick={createCategory}>Add Category</Button>
-        <Button onClick={viewCategories}>View Categories</Button>
-        <Button onClick={viewProducts}>View Products</Button>
-      </ButtonGroup>
+          <ButtonGroup mr="10">
+            <Button onClick={createInventory}>Add Product</Button>
+            <Button onClick={createCategory}>Add Category</Button>
+            <Button onClick={viewCategories}>View Categories</Button>
+            <Button onClick={viewProducts}>View Products</Button>
+          </ButtonGroup>
+        </>
+      )}
+      {error && (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle>Login Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      {!loading && isSuccess && role !== "admin" && (
+        <div>You dont have permission to access this page</div>
+      )}
     </Box>
-  ) : error ? (
-    <Alert status="error">
-      <AlertIcon />
-      <AlertTitle>Login Error</AlertTitle>
-      <AlertDescription>{error}</AlertDescription>
-    </Alert>
-  ) : (
-    <div>You dont have permission to access this page</div>
   );
 };

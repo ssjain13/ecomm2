@@ -5,16 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { authenticate } from "../api";
 
+
 export const Login = () => {
   const [credentials, setCredentials] = useState({
-    username: "sonal@abc.com",
-    password: "test123434",
+    username: "",
+    password: "",
   });
-
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const handleInputChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -28,6 +27,8 @@ export const Login = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
+    
+
     dispatch(authenticate(credentials));
     navigate("/admin");
   };
