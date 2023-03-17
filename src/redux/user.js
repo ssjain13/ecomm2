@@ -1,18 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authenticate, registerUser } from "../api";
 
+const userModel = {
+  token: "",
+  address: "",
+  photoUrl: "",
+  displayName: "",
+  uid: "",
+  phone: "",
+  email: "",
+};
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    email: "",
-    displayName: "",
     username: "",
     password: "",
     role: "user",
     isSuccess: false,
-    token: "",
     error: "",
     loading: true,
+    userModel,
   },
   reducers: {
     logoutUser: (state, action) => {
@@ -24,12 +31,10 @@ const userSlice = createSlice({
   },
   extraReducers: {
     [authenticate.fulfilled]: (state, action) => {
-      state.token = action.payload.token;
+      state.userModel = action.payload;
       state.isSuccess = true;
       state.role = "admin";
       state.error = "";
-      state.email = action.payload.email;
-      state.displayName = action.payload.displayName;
       state.loading = false;
     },
     [authenticate.rejected]: (state, action) => {

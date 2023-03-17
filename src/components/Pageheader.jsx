@@ -1,19 +1,8 @@
-import {
-  Flex,
-  Button,
-  Image,
-  Text,
-  Heading,
-  Box,
-  Badge,
-  Spacer,
-  ButtonGroup,
-} from "@chakra-ui/react";
-import React from "react";
+import { Flex, Button, Text, Heading, Box, Spacer, ButtonGroup } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { FaShoppingCart, FaHome } from "react-icons/fa";
-import { BiLogIn,BiLogOut } from "react-icons/bi";
+import { BiLogIn, BiLogOut } from "react-icons/bi";
 import { HiUserPlus } from "react-icons/hi2";
 
 import "../styles/main.style.css";
@@ -25,7 +14,7 @@ export const Pageheader = () => {
   let location = useLocation();
 
   const navigate = useNavigate();
-  const { username } = useSelector((state) => state.user);
+  const { userModel } = useSelector((state) => state.user);
 
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -73,7 +62,7 @@ export const Pageheader = () => {
         {location.pathname === "/admin" && (
           <Flex alignItems={"center"}>
             <Box mr="10px">
-              <Text>Welcome {username}</Text>
+              <Text>Welcome {userModel.displayName}</Text>
             </Box>
             <Button
               leftIcon={<BiLogOut />}
