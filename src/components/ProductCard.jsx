@@ -20,7 +20,7 @@ export const Item = ({ product }) => {
       <Card maxW="sm">
         <CardBody>
           <Image
-            src={product.image}
+            src={product.url}
             alt={product.title}
             borderRadius="md"
             boxSize="200px"

@@ -29,7 +29,7 @@ export const ShoppingCart = () => {
             cartItems.map((cartItem) => (
               <Flex key={cartItem.id} mt="20px" ml="10em">
                 <Image
-                  src={cartItem.image}
+                  src={cartItem.url}
                   alt={cartItem.title}
                   borderRadius="md"
                   boxSize="80px"

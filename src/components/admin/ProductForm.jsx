@@ -1,4 +1,12 @@
-import { Box, FormControl, FormLabel, Input, Select, Textarea, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Select,
+  Textarea,
+  useToast,
+} from "@chakra-ui/react";
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -14,7 +22,7 @@ const initialState = {
   description: "",
   price: "",
   category: "",
-  image: "",
+
   rating: {
     count: 0,
     rate: 0,
@@ -24,6 +32,8 @@ export const ProductForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isDisable, setIsDisable] = useState(false);
+
+  const formData = new FormData();
 
   const data = location.state;
   const [product, setProduct] = useState(
@@ -43,8 +53,9 @@ export const ProductForm = () => {
   const dispatch = useDispatch();
 
   const handleCreate = (e) => {
-    dispatch(saveProduct(product));
-
+    formData.append("data", JSON.stringify(product));
+    console.log(formData.get("image"));
+    dispatch(saveProduct(formData));
     toast({
       title: `Product created successfully`,
       status: "success",
@@ -58,6 +69,11 @@ export const ProductForm = () => {
 
   const handleCancel = () => {
     navigate("/admin");
+  };
+
+  const handleImageUpload = (e) => {
+    formData.append(e.target.name, e.target.files[0]);
+    console.log(formData.get(e.target.name));
   };
   const handleChange = (e) => {
     const name = e.target.name;
@@ -134,12 +150,18 @@ export const ProductForm = () => {
           </Select>
 
           {mode !== "edit" && (
-            <Input
-              name="image"
-              disabled={isDisable}
-              value={product.image}
-              onChange={handleChange}
-            />
+            <>
+              <FormLabel htmlFor="image">Select Image:</FormLabel>
+              <Input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                mb="3"
+                disabled={isDisable}
+                onChange={handleImageUpload}
+              />
+            </>
           )}
 
           {mode === "edit" ? (

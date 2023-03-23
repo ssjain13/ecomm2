@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const baseURL = "https://fakestoreapi.com";
 
-//const backend_api = process.env.PROD_URL;
-const backend_api = "http://localhost:3030";
+const backend_api = process.env.PROD_URL;
+//const backend_api = "http://localhost:3030";
 
 export const authenticate = createAsyncThunk(
   "user/login",
@@ -19,7 +19,7 @@ export const authenticate = createAsyncThunk(
       });
       if (!res.ok) {
         await res.json().then((data) => {
-          throw new Error(data.code);
+          throw new Error(data.message);
         });
       }
       return res.json();
@@ -112,10 +112,9 @@ export const saveProduct = createAsyncThunk(
       const data = await fetch(`${backend_api}/saveProduct`, {
         method: "POST", // or 'PUT'
         headers: {
-          "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify(product),
+        body: product,
       });
 
       return await data.json();
