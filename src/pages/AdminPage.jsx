@@ -14,18 +14,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { fetchProducts, fetchProductsCount } from "../api";
 
-
 export const AdminPage = () => {
   const { role } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const { isSuccess, error, loading } = useSelector((state) => state.user);
 
-  const { categories } = useSelector((state) => state.categories);
+  const categoriesState = useSelector((state) => state.categories);
+  const productState = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const createInventory = () => {
-    navigate("/create", { state: { categories: categories } });
+    navigate("/create", { state: { categories: categoriesState.categories } });
   };
-
+  const checkLoading = () => {
+    return loading || categoriesState.loading || productState.loading;
+  };
   const createCategory = () => {
     navigate("/createCategory");
   };
@@ -37,16 +39,16 @@ export const AdminPage = () => {
   };
 
   const loadData = () => {
-    categories &&
-      categories.map((category) => {
+    categoriesState.categories &&
+      categoriesState.categories.map((category) => {
         dispatch(fetchProductsCount(category.name));
       });
   };
 
   return (
     <Box>
-      {loading && <Progress size="xs" isIndeterminate mt={"30px"} />}
-      {!loading && isSuccess && role === "admin" && (
+      {checkLoading() && <Progress size="xs" isIndeterminate mt={"30px"} />}
+      {!checkLoading() && isSuccess && role === "admin" && (
         <>
           <Text fontSize="2xl" align="center">
             Welcome to Admin
