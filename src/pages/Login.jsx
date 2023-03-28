@@ -8,8 +8,8 @@ import { authenticate } from "../api";
 
 export const Login = () => {
   const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
+    username: "jane@test.com",
+    password: "App@12103",
   });
 
   const navigate = useNavigate();

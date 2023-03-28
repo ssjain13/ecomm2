@@ -14,6 +14,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  Avatar,
 } from "@chakra-ui/react";
 
 import "../../../styles/admin.style.css";
@@ -28,8 +29,6 @@ import { useNavigate } from "react-router";
 import { deleteProduct, fetchProducts } from "../../../api";
 
 export const ProductsDashboard = ({ categories }) => {
-  const { title, category, price, rating } = data;
-  const { productId, qty } = stock;
   const { products, loading, error } = useSelector((state) => state.product);
 
   const dispatch = useDispatch();
@@ -71,6 +70,7 @@ export const ProductsDashboard = ({ categories }) => {
               <Table variant="simple">
                 <Thead>
                   <Tr className="table-heading">
+                    <Td></Td>
                     <Td>Title</Td>
                     <Td>Category</Td>
                     <Td isNumeric>Price</Td>
@@ -82,6 +82,14 @@ export const ProductsDashboard = ({ categories }) => {
                 <Tbody>
                   {products.map((product) => (
                     <Tr key={product.id}>
+                      <Td>
+                        {" "}
+                        <Avatar
+                          size="lg"
+                          name="Dan Abrahmov"
+                          src={product.url}
+                        />
+                      </Td>
                       <Td>{product.title}</Td>
                       <Td>{product.category}</Td>
                       <Td isNumeric>{product.price}</Td>
