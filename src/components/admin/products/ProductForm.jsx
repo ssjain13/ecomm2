@@ -12,9 +12,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
-import { CancelCustomBtn, CustomBtn } from "../UI-components/CustomBtn";
+import { CancelCustomBtn, CustomBtn } from "../../UI-components/CustomBtn";
 import { BiCaretDown } from "react-icons/bi";
-import { saveProduct, updateProduct } from "../../api";
+import { saveProduct, updateProduct } from "../../../api";
 
 const initialState = {
   id: "",
@@ -63,12 +63,12 @@ export const ProductForm = () => {
     });
     setIsDisable(true);
     setTimeout(() => {
-      navigate("/admin");
+      navigate("/");
     }, 2000);
   };
 
   const handleCancel = () => {
-    navigate("/admin");
+    navigate("/");
   };
 
   const handleImageUpload = (e) => {
@@ -97,7 +97,7 @@ export const ProductForm = () => {
     });
     setIsDisable(true);
     setTimeout(() => {
-      navigate("/admin");
+      navigate("/");
     }, 2000);
   };
 

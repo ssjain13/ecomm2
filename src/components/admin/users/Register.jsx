@@ -3,7 +3,7 @@ import { useState } from "react";
 import PasswordStrengthBar from "react-password-strength-bar";
 
 import { useDispatch } from "react-redux";
-import { registerUser } from "../../api";
+import { registerUser } from "../../../api";
 import { useNavigate } from "react-router";
 export const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");

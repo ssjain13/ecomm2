@@ -66,6 +66,7 @@ export const productSlice = createSlice({
     [saveProduct.fulfilled]: (state, action) => {
       state.loading = false;
       state.products.push(action.payload);
+      state.filteredData.push(action.payload);
     },
     [saveProduct.rejected]: (state) => {
       state.loading = false;
@@ -85,8 +86,6 @@ export const productSlice = createSlice({
     [fetchProductsCount.fulfilled]: (state, action) => {
       state.productCategoryMap.push(action.payload);
     },
-
-   
   },
 });
 

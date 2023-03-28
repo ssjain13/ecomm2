@@ -30,7 +30,7 @@ export const Login = () => {
     
 
     dispatch(authenticate(credentials));
-    navigate("/admin");
+    navigate("/");
   };
 
   return (

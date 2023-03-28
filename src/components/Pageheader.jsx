@@ -1,4 +1,12 @@
-import { Flex, Button, Text, Heading, Box, Spacer, ButtonGroup } from "@chakra-ui/react";
+import {
+  Flex,
+  Button,
+  Text,
+  Heading,
+  Box,
+  Spacer,
+  ButtonGroup,
+} from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { FaShoppingCart, FaHome } from "react-icons/fa";
@@ -16,7 +24,6 @@ export const Pageheader = () => {
   const navigate = useNavigate();
   const { userModel } = useSelector((state) => state.user);
 
-  const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -36,7 +43,7 @@ export const Pageheader = () => {
       </Heading>
       <Spacer />
       <ButtonGroup gap="2">
-        {location.pathname !== "/admin" && (
+        {location.pathname !== "/" && (
           <>
             <Button
               leftIcon={<BiLogIn />}
@@ -59,7 +66,7 @@ export const Pageheader = () => {
           </>
         )}
 
-        {location.pathname === "/admin" && (
+        {location.pathname === "/" && (
           <Flex alignItems={"center"}>
             <Box mr="10px">
               <Text>Welcome {userModel.displayName}</Text>
@@ -74,19 +81,6 @@ export const Pageheader = () => {
               Logout
             </Button>
           </Flex>
-        )}
-
-        {location.pathname === "/" && (
-          <>
-            <div className="Nav">
-              <div className="cart" onClick={() => navigate("/cart")}>
-                <div>
-                  <IconButton icon={<FaShoppingCart />} />
-                </div>
-                <div className="badge">{cartItems.length}</div>
-              </div>
-            </div>
-          </>
         )}
 
         {location.pathname !== "/" && (

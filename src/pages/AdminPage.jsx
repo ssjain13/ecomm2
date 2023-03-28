@@ -13,7 +13,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { fetchProducts, fetchProductsCount } from "../api";
-import { Dashboard } from "../components/admin/Dashboard";
+
 
 export const AdminPage = () => {
   const { role } = useSelector((state) => state.user);

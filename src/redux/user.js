@@ -16,9 +16,9 @@ const userSlice = createSlice({
     username: "",
     password: "",
     role: "user",
-    isSuccess: false,
+    isSuccess: true,
     error: "",
-    loading: true,
+    loading: false,
     userModel,
   },
   reducers: {
@@ -36,6 +36,8 @@ const userSlice = createSlice({
       state.role = "admin";
       state.error = "";
       state.loading = false;
+      localStorage.clear();
+      localStorage.setItem("user-token", action.payload.uid);
     },
     [authenticate.rejected]: (state, action) => {
       state.isSuccess = false;

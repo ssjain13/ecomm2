@@ -1,5 +1,5 @@
 {
-  "name": "todo-app",
+  "name": "admin-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "preview": "vite preview",
-    "start": "concurrently \"npm run dev\" \"cd ../server && npm run start\""
+    "start": "concurrently \"npm run dev\" \"cd server && npm run start\""
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.15",
@@ -24,10 +24,12 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@stripe/react-stripe-js": "^1.16.2",
     "@stripe/stripe-js": "^1.46.0",
-    "concurrently": "^7.6.0",    
+    "chart.js": "^4.2.1",
+    "concurrently": "^7.6.0",
     "formik": "^2.2.9",
     "framer-motion": "^8.0.2",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-password-strength-bar": "^0.4.1",
@@ -39,7 +41,12 @@
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@vitejs/plugin-react": "^3.0.0",
+    "chai": "^4.3.7",
     "gh-pages": "^5.0.0",
+    "karma": "^6.4.1",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "supertest": "^6.3.3",
     "vite": "^4.0.0"
   }
 }

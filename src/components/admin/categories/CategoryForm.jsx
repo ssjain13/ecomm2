@@ -9,8 +9,8 @@ import {
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
-import { saveCategory, updateCategory } from "../../api";
-import { CancelCustomBtn, CustomBtn } from "../UI-components/CustomBtn";
+import { saveCategory, updateCategory } from "../../../api";
+import { CancelCustomBtn, CustomBtn } from "../../UI-components/CustomBtn";
 
 export const CategoryForm = () => {
   const location = useLocation();
@@ -54,7 +54,7 @@ export const CategoryForm = () => {
     });
     setIsDisable(true);
     setTimeout(() => {
-      navigate("/admin");
+      navigate("/");
     }, 2000);
   };
   const handleCreate = (e) => {
@@ -67,12 +67,12 @@ export const CategoryForm = () => {
     });
     setIsDisable(true);
     setTimeout(() => {
-      navigate("/admin");
+      navigate("/");
     }, 2000);
   };
 
   const handleCancel = (e) => {
-    navigate("/admin");
+    navigate("/");
   };
   return (
     <Box ml="15px">

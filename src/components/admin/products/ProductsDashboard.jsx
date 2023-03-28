@@ -1,67 +1,57 @@
+import { useEffect } from "react";
 import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Td,
   TableContainer,
   Button,
   Box,
   Heading,
-  Text,
-  Spinner,
   Progress,
   Alert,
   AlertIcon,
   AlertTitle,
   AlertDescription,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+
+import "../../../styles/admin.style.css";
+
 import { useDispatch, useSelector } from "react-redux";
+import { data } from "../../../model/product.json";
+import { stock } from "../../../model/stock.json";
+
 import { CiEdit } from "react-icons/ci";
-import { MdDeleteForever } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router";
-import { deleteCategory, fetchCategories, fetchProductsCount } from "../../api";
+import { deleteProduct, fetchProducts } from "../../../api";
 
-export const CategoryDashboard = ({ categories }) => {
+export const ProductsDashboard = ({ categories }) => {
+  const { title, category, price, rating } = data;
+  const { productId, qty } = stock;
+  const { products, loading, error } = useSelector((state) => state.product);
+
   const dispatch = useDispatch();
-  const { productCategoryMap, loading, error } = useSelector(
-    (state) => state.product
-  );
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
   const navigate = useNavigate();
-  const updateCategory = (category) => {
-    navigate("/category/edit", {
-      state: { category: category },
+
+  const updateProduct = (product) => {
+    navigate("/product/edit", {
+      state: { product: product, categories: categories },
     });
   };
 
-  const onDelete = (category) => {
-    //  getCountOfProductsByCategory(category);
-    dispatch(deleteCategory(category.id));
+  const onDelete = (product) => {
+    dispatch(deleteProduct(product.id));
   };
-
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, []);
-
-  const getCount = (category) => {
-    const res = productCategoryMap.find((p) => p.category === category.name);
-
-    return res && res.productCount;
-  };
-  const getCountOfProductsByCategory = (category) => {
-    //API call which returns count of products in category provided.
-    const m = { product: "", count: 0 };
-    const final = [];
-    dispatch(fetchProductsCount(category.name));
-  };
-
   return (
     <Box>
       {loading && <Progress size="xs" isIndeterminate mt={"30px"} />}
-      {!loading && categories.length < 1 ? (
+      {!loading && products.length < 1 ? (
         <Heading
           className="product_msg0"
           style={{
@@ -72,7 +62,7 @@ export const CategoryDashboard = ({ categories }) => {
             fontSize: "1.5em",
           }}
         >
-          No Categories!!
+          No Products!!
         </Heading>
       ) : (
         !loading && (
@@ -81,32 +71,34 @@ export const CategoryDashboard = ({ categories }) => {
               <Table variant="simple">
                 <Thead>
                   <Tr className="table-heading">
-                    <Td>Name</Td>
-                    <Td>Description</Td>
-
-                    <Td isNumeric>No. of Products</Td>
+                    <Td>Title</Td>
+                    <Td>Category</Td>
+                    <Td isNumeric>Price</Td>
+                    <Td isNumeric>Rating</Td>
                     <Td></Td>
                   </Tr>
                 </Thead>
 
                 <Tbody>
-                  {categories.map((category) => (
-                    <Tr key={category.name}>
-                      <Td>{category.name}</Td>
-                      <Td>{category.description}</Td>
-                      <Td>{getCount(category)}</Td>
+                  {products.map((product) => (
+                    <Tr key={product.id}>
+                      <Td>{product.title}</Td>
+                      <Td>{product.category}</Td>
+                      <Td isNumeric>{product.price}</Td>
+                      <Td isNumeric>{product.rating.rate}</Td>
+
                       <Td>
                         <Button
                           leftIcon={<CiEdit />}
                           variant="ghost"
-                          onClick={() => updateCategory(category)}
+                          onClick={() => updateProduct(product)}
                           mt="10px"
                           mr="10px"
                         ></Button>
                         <Button
                           leftIcon={<RxCross2 />}
                           variant="ghost"
-                          onClick={() => onDelete(category)}
+                          onClick={() => onDelete(product)}
                           mt="10px"
                           mr="10px"
                         ></Button>
@@ -116,7 +108,7 @@ export const CategoryDashboard = ({ categories }) => {
                 </Tbody>
               </Table>
             </TableContainer>
-            <Button onClick={() => navigate("/admin")}>Back</Button>
+            <Button onClick={() => navigate("/")}>Back</Button>
           </>
         )
       )}
