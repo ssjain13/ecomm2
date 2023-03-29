@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authenticate, registerUser } from "../api";
+import { authenticate, fetchAllUsers, registerUser } from "../api";
 
 const userModel = {
   token: "",
@@ -20,6 +20,7 @@ const userSlice = createSlice({
     error: "",
     loading: false,
     userModel,
+    userList:[]
   },
   reducers: {
     logoutUser: (state, action) => {
@@ -68,6 +69,24 @@ const userSlice = createSlice({
       state.displayName = action.payload.displayName;
       state.loading = false;
     },
+    [fetchAllUsers.fulfilled]:(state, action) => {
+      state.userList = action.payload;
+      state.loading = false;
+      state.error = false;
+    },
+
+    [fetchAllUsers.pending]:(state, action) => {
+      state.userList = [];
+      state.loading = true;
+      state.error = false;
+    },
+
+    [fetchAllUsers.rejected]:(state, action) => {
+      state.isSuccess = false;
+      state.loading = false;
+      state.error = action.error.message;
+    },
+
   },
 });
 

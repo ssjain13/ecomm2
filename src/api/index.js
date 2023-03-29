@@ -70,10 +70,8 @@ export const fetchProducts = createAsyncThunk(
 
 export const fetchProductsCount = createAsyncThunk(
   "products/fetchProductsCount",
-  async (category) => {
-    const res = await fetch(
-      `${backend_api}/getCountByCategory?` + new URLSearchParams({ category })
-    )
+  async () => {
+    const res = await fetch(`${backend_api}/getCountByCategory`)
       .then((data) => {
         return data.json();
       })
@@ -81,6 +79,20 @@ export const fetchProductsCount = createAsyncThunk(
         return err;
       });
     return res;
+  }
+);
+
+export const fetchAllUsers = createAsyncThunk(
+  "users/fetchAllUsers",
+  async () => {
+    try {
+      const users = await fetch(`${backend_api}/fetchAllUsers`).then((res) => {
+        return res.json();
+      });
+      return users;
+    } catch (err) {
+      return err;
+    }
   }
 );
 

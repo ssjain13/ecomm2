@@ -84,7 +84,17 @@ export const productSlice = createSlice({
       state.error = true;
     },
     [fetchProductsCount.fulfilled]: (state, action) => {
-      state.productCategoryMap.push(action.payload);
+      state.loading = false;
+      state.productCategoryMap = action.payload
+    },
+    [fetchProductsCount.pending]: (state, action) => {
+      state.productCategoryMap = [];
+      state.loading = true;
+    },
+    [fetchProductsCount.rejected]: (state, action) => {
+      state.productCategoryMap = [];
+      state.loading = false;
+      state.error = true;
     },
   },
 });

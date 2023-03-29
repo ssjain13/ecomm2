@@ -1,32 +1,18 @@
-import { useEffect } from "react";
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Td,
-  TableContainer,
-  Button,
-  Box,
-  Heading,
-  Progress,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-  Avatar,
+  Alert, AlertDescription, AlertIcon,
+  AlertTitle, Avatar, Box, Button, Heading,
+  Progress, Table, TableContainer, Tbody, Td, Thead, Tr
 } from "@chakra-ui/react";
-
-import "../../../styles/admin.style.css";
-
-import { useDispatch, useSelector } from "react-redux";
-import { data } from "../../../model/product.json";
-import { stock } from "../../../model/stock.json";
-
+import { useEffect } from "react";
 import { CiEdit } from "react-icons/ci";
 import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { deleteProduct, fetchProducts } from "../../../api";
+import "../../../styles/admin.style.css";
+
+
+
 
 export const ProductsDashboard = ({ categories }) => {
   const { products, loading, error } = useSelector((state) => state.product);

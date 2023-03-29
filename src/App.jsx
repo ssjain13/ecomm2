@@ -7,15 +7,16 @@ import { CategoryForm } from "./components/admin/categories/CategoryForm";
 import { ProductForm } from "./components/admin/products/ProductForm";
 import { ProductsDashboard } from "./components/admin/products/ProductsDashboard";
 import { Register } from "./components/admin/users/Register";
+import { UserDashboard } from "./components/admin/users/UserDashboard";
 import { Pageheader } from "./components/Pageheader";
 import { AdminPage } from "./pages/AdminPage";
 import { Inventory } from "./pages/Inventory";
 import { Login } from "./pages/Login";
 import { SuccessPage } from "./pages/SuccessPage";
 
-
 function App() {
   const selectorData = useSelector((state) => state.categories);
+  const { userModel, userList } = useSelector((state) => state.user);
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const { loading, error, filteredData } = useSelector(
@@ -42,6 +43,8 @@ function App() {
           path="/viewCategories"
           element={<CategoryDashboard categories={selectorData.categories} />}
         />
+
+        <Route path="/viewUsers" element={<UserDashboard currentUser={userModel} users = {userList}/>} />
 
         <Route path="/create" element={<Inventory />} />
         <Route path="/createCategory" element={<CategoryForm />} />

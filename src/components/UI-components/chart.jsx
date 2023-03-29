@@ -1,14 +1,10 @@
-import React from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import React, { useState, useEffect } from "react";
+
 import { Bar } from "react-chartjs-2";
+import { CategoryScale } from "chart.js";
+import Chart from "chart.js/auto";
+import { useSelector } from "react-redux";
+import { Progress } from "@chakra-ui/react";
 
 export const options = {
   responsive: true,
@@ -18,24 +14,46 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Chart.js Bar Chart",
+      text: "Product count per category",
     },
   },
 };
-export const Chart = () => {
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
+Chart.register(CategoryScale);
 
+export const ChartCompo = () => {
+  const { productCategoryMap, loading } = useSelector((state) => state.product);
+  const [labels, setLabels] = useState([]);
+  const [countData, setData] = useState([]);
+  const initLabel = () => {
+    productCategoryMap.map((productCategory) => {
+      setLabels((prev) => [...prev, productCategory.category]);
+      setData((prev) => [...prev, productCategory.count]);
+    });
+  };
+  useEffect(() => {
+    initLabel();
+  }, []);
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Count",
+        data: countData,
+
+        backgroundColor: [
+          "rgb(247, 150, 150)",
+          "rgb(243, 172, 131)",
+          "rgb(136, 161, 245)",
+          "rgb(245, 161, 217)",
+        ],
+        borderWidth: 2,
+      },
+    ],
+  };
   return (
     <>
-      <Bar options={options} data={data} />;
+      {loading && <Progress size="xs" isIndeterminate mt={"30px"} />}
+      {!loading && <Bar options={options} data={data} />}
     </>
   );
 };
