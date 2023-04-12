@@ -16,9 +16,9 @@ import { fetchProducts, fetchProductsCount } from "../api";
 import { ChartCompo } from "../components/UI-components/chart";
 
 export const AdminPage = () => {
-  const { role } = useSelector((state) => state.user);
+  
   const navigate = useNavigate();
-  const { isSuccess, error, loading } = useSelector((state) => state.user);
+  const { error, loading , role} = useSelector((state) => state.user);
 
   const categoriesState = useSelector((state) => state.categories);
   const productState = useSelector((state) => state.product);
@@ -41,16 +41,16 @@ export const AdminPage = () => {
   const viewUsers = () => {
     navigate("/viewUsers");
   };
-  useEffect(() => {    
-      dispatch(fetchProductsCount());
+  useEffect(() => {
+    dispatch(fetchProductsCount());
   }, []);
 
   return (
     <Box>
       {checkLoading() && <Progress size="xs" isIndeterminate mt={"30px"} />}
-      {!checkLoading() && isSuccess && role === "admin" && (
+      {!checkLoading() && (
         <>
-         <ButtonGroup mr="10">
+          <ButtonGroup mr="10">
             <Button onClick={createInventory}>Add Product</Button>
             <Button onClick={createCategory}>Add Category</Button>
             <Button onClick={viewCategories}>View Categories</Button>
@@ -67,7 +67,7 @@ export const AdminPage = () => {
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
-      {!loading && isSuccess && role !== "admin" && (
+      {!loading && role !== "admin" && (
         <div>You dont have permission to access this page</div>
       )}
     </Box>

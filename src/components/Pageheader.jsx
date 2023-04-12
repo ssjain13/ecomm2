@@ -15,19 +15,19 @@ import { HiUserPlus } from "react-icons/hi2";
 
 import "../styles/main.style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../redux/user";
 import { IconButton } from "./UI-components/IconButton";
+import { signout } from "../api";
 
 export const Pageheader = () => {
   let location = useLocation();
 
   const navigate = useNavigate();
-  const { userModel } = useSelector((state) => state.user);
+  const { userModel, isAuthenticated } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate("/login");
+    dispatch(signout());
+    navigate("/");
   };
 
   return (
@@ -43,7 +43,7 @@ export const Pageheader = () => {
       </Heading>
       <Spacer />
       <ButtonGroup gap="2">
-        {location.pathname !== "/" && (
+        {!isAuthenticated && (
           <>
             <Button
               leftIcon={<BiLogIn />}
@@ -66,7 +66,7 @@ export const Pageheader = () => {
           </>
         )}
 
-        {location.pathname === "/" && (
+        {isAuthenticated && (
           <Flex alignItems={"center"}>
             <Box mr="10px">
               <Text>Welcome {userModel.displayName}</Text>
@@ -83,8 +83,8 @@ export const Pageheader = () => {
           </Flex>
         )}
 
-        {location.pathname !== "/" && (
-          <div className="cart" onClick={() => navigate("/")}>
+        {isAuthenticated && (
+          <div className="cart" onClick={() => navigate("/dashboard")}>
             <IconButton icon={<FaHome />} />
           </div>
         )}

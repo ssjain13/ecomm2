@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { authenticate } from "../api";
 
-
 export const Login = () => {
   const [credentials, setCredentials] = useState({
     username: "jane@test.com",
@@ -27,10 +26,8 @@ export const Login = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    
-
     dispatch(authenticate(credentials));
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (

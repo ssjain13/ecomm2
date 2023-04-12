@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { deleteProduct, fetchProducts } from "../../../api";
 import "../../../styles/admin.style.css";
+import { BackBtn } from "../../UI-components/BackBtn";
 
 
 
@@ -102,7 +103,7 @@ export const ProductsDashboard = ({ categories }) => {
                 </Tbody>
               </Table>
             </TableContainer>
-            <Button onClick={() => navigate("/")}>Back</Button>
+           <BackBtn/>
           </>
         )
       )}

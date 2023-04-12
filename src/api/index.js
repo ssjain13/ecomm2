@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const baseURL = "https://fakestoreapi.com";
-
-const backend_api = process.env.PROD_URL;
-//const backend_api = "http://localhost:3030";
+const backend_api =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_PROD_API_URL
+    : process.env.REACT_APP_LOCAL_API_URL;
 
 export const authenticate = createAsyncThunk(
   "user/login",
@@ -31,6 +31,16 @@ export const authenticate = createAsyncThunk(
   }
 );
 
+export const signout = createAsyncThunk("user/signout", async (user) => {
+  const res = await fetch(`${backend_api}/signout`)
+    .then((data) => {
+      return data.json();
+    })
+    .catch((err) => {
+      return err;
+    });
+  return res;
+});
 export const registerUser = createAsyncThunk("user/register", async (user) => {
   try {
     const res = await fetch(`${backend_api}/register`, {
@@ -195,7 +205,7 @@ export const deleteProduct = createAsyncThunk("products/delete", async (id) => {
 
 export const deleteCategory = createAsyncThunk(
   "categories/delete",
-  async (id) => {
+  async (category) => {
     try {
       const data = await fetch(`${backend_api}/deleteCategory`, {
         method: "DELETE", // or 'PUT'
@@ -203,7 +213,7 @@ export const deleteCategory = createAsyncThunk(
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ category }),
       });
 
       return await data.json();

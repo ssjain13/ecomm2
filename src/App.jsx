@@ -9,6 +9,7 @@ import { ProductsDashboard } from "./components/admin/products/ProductsDashboard
 import { Register } from "./components/admin/users/Register";
 import { UserDashboard } from "./components/admin/users/UserDashboard";
 import { Pageheader } from "./components/Pageheader";
+import { ProtectedRoutes } from "./components/ProtectedRoutes";
 import { AdminPage } from "./pages/AdminPage";
 import { Inventory } from "./pages/Inventory";
 import { Login } from "./pages/Login";
@@ -16,7 +17,9 @@ import { SuccessPage } from "./pages/SuccessPage";
 
 function App() {
   const selectorData = useSelector((state) => state.categories);
-  const { userModel, userList } = useSelector((state) => state.user);
+  const { userModel, userList, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const { loading, error, filteredData } = useSelector(
@@ -32,29 +35,27 @@ function App() {
     <>
       <Pageheader />
       <Routes>
-        <Route path="/" element={<AdminPage />}></Route>
-
-        <Route
-          path="/viewProducts"
-          element={<ProductsDashboard categories={selectorData.categories} />}
-        />
-
-        <Route
-          path="/viewCategories"
-          element={<CategoryDashboard categories={selectorData.categories} />}
-        />
-
-        <Route path="/viewUsers" element={<UserDashboard currentUser={userModel} users = {userList}/>} />
-
-        <Route path="/create" element={<Inventory />} />
-        <Route path="/createCategory" element={<CategoryForm />} />
-
-        <Route path="/login" element={<Login />} />
+        <Route index element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/product/edit" element={<ProductForm />} />
-        <Route path="/category/edit" element={<CategoryForm />} />
-
-        <Route path="/success" element={<SuccessPage />} />
+        <Route element={<ProtectedRoutes isAllowed={isAuthenticated} />}>
+          <Route path="/dashboard" element={<AdminPage />} />
+          <Route
+            path="/viewProducts"
+            element={<ProductsDashboard categories={selectorData.categories} />}
+          />
+          <Route
+            path="/viewCategories"
+            element={<CategoryDashboard categories={selectorData.categories} />}
+          />
+          <Route
+            path="/viewUsers"
+            element={<UserDashboard currentUser={userModel} users={userList} />}
+          />
+          <Route path="/create" element={<Inventory />} />
+          <Route path="/createCategory" element={<CategoryForm />} />
+          <Route path="/product/edit" element={<ProductForm />} />
+          <Route path="/category/edit" element={<CategoryForm />} />
+        </Route>
       </Routes>
     </>
   );

@@ -6,8 +6,9 @@ export default defineConfig({
   base: "/ecomm2",
   plugins: [react()],
   define: {
-    "process.env": {
-      PROD_URL: "https://fashionesta-app.onrender.com"
+    "process.env": {   
+      REACT_APP_PROD_API_URL: "https://fashionesta-app.onrender.com",
+      REACT_APP_LOCAL_API_URL: "http://localhost:3030",
     },
   },
 });

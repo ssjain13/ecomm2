@@ -16,14 +16,16 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  IconButton,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CiEdit } from "react-icons/ci";
-import { MdDeleteForever } from "react-icons/md";
+import { BiArrowBack } from "react-icons/bi";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router";
-import { deleteCategory, fetchCategories, fetchProductsCount } from "../../../api";
+import { deleteCategory, fetchCategories } from "../../../api";
+import { BackBtn } from "../../UI-components/BackBtn";
 
 export const CategoryDashboard = ({ categories }) => {
   const dispatch = useDispatch();
@@ -38,8 +40,7 @@ export const CategoryDashboard = ({ categories }) => {
   };
 
   const onDelete = (category) => {
-    //  getCountOfProductsByCategory(category);
-    dispatch(deleteCategory(category.id));
+    dispatch(deleteCategory(category));
   };
 
   useEffect(() => {
@@ -47,15 +48,8 @@ export const CategoryDashboard = ({ categories }) => {
   }, []);
 
   const getCount = (category) => {
-    const res = productCategoryMap.find((p) => p.category === category.name);
-
-    return res && res.productCount;
-  };
-  const getCountOfProductsByCategory = (category) => {
-    //API call which returns count of products in category provided.
-    const m = { product: "", count: 0 };
-    const final = [];
-    dispatch(fetchProductsCount(category.name));
+    const value = productCategoryMap[category];
+    return value ? value : 0;
   };
 
   return (
@@ -81,42 +75,41 @@ export const CategoryDashboard = ({ categories }) => {
               <Table variant="simple">
                 <Thead>
                   <Tr className="table-heading">
+                    <Td></Td>
                     <Td>Name</Td>
-                    <Td>Description</Td>
+                    <Td width="30px">Description</Td>
 
                     <Td isNumeric>No. of Products</Td>
-                    <Td></Td>
                   </Tr>
                 </Thead>
 
                 <Tbody>
                   {categories.map((category) => (
                     <Tr key={category.id}>
-                      <Td>{category.name}</Td>
-                      <Td>{category.description}</Td>
-                      <Td>{getCount(category)}</Td>
                       <Td>
                         <Button
                           leftIcon={<CiEdit />}
                           variant="ghost"
                           onClick={() => updateCategory(category)}
                           mt="10px"
-                          mr="10px"
                         ></Button>
                         <Button
                           leftIcon={<RxCross2 />}
                           variant="ghost"
                           onClick={() => onDelete(category)}
                           mt="10px"
-                          mr="10px"
                         ></Button>
                       </Td>
+                      <Td>{category.name}</Td>
+                      <Td>{category.description}</Td>
+                      <Td>{getCount(category.name)}</Td>
                     </Tr>
                   ))}
                 </Tbody>
               </Table>
             </TableContainer>
-            <Button onClick={() => navigate("/")}>Back</Button>
+
+            <BackBtn />
           </>
         )
       )}

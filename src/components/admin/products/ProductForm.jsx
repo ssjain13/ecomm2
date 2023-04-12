@@ -5,6 +5,7 @@ import {
   Input,
   Select,
   Textarea,
+  Spinner,
   useToast,
 } from "@chakra-ui/react";
 
@@ -40,7 +41,7 @@ export const ProductForm = () => {
     data.product ? data.product : initialState
   );
   const toast = useToast();
-
+  const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("create");
   useEffect(() => {
     if (data.product) {
@@ -52,28 +53,32 @@ export const ProductForm = () => {
 
   const dispatch = useDispatch();
 
-  const handleCreate = (e) => {
+  const handleCreate = () => {
     formData.append("data", JSON.stringify(product));
-    console.log(formData.get("image"));
-    dispatch(saveProduct(formData));
-    toast({
-      title: `Product created successfully`,
-      status: "success",
-      duration: 1000,
-    });
     setIsDisable(true);
-    setTimeout(() => {
-      navigate("/");
-    }, 2000);
+    setLoading(true);
+    const res = dispatch(saveProduct(formData));
+    res.then((data) => {
+      toast({
+        title: `Product created successfully`,
+        status: "success",
+        duration: 1000,
+      });
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+      if (data.type.includes("fulfilled")) {
+        setLoading(false);
+      }
+    });
   };
 
   const handleCancel = () => {
-    navigate("/");
+    navigate("/dashboard");
   };
 
   const handleImageUpload = (e) => {
     formData.append(e.target.name, e.target.files[0]);
-    console.log(formData.get(e.target.name));
   };
   const handleChange = (e) => {
     const name = e.target.name;
@@ -88,17 +93,23 @@ export const ProductForm = () => {
   };
 
   const handleUpdate = () => {
-    dispatch(updateProduct(product));
-
-    toast({
-      title: `Product updated successfully`,
-      status: "success",
-      duration: 1000,
-    });
     setIsDisable(true);
-    setTimeout(() => {
-      navigate("/");
-    }, 2000);
+    setLoading(true);
+    const res = dispatch(updateProduct(product));
+    res.then((data) => {
+      toast({
+        title: `Product updated successfully`,
+        status: "success",
+        duration: 1000,
+      });
+      setIsDisable(true);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+      if (data.type.includes("fulfilled")) {
+        setLoading(false);
+      }
+    });
   };
 
   const options = data.categories.map((category) => {
@@ -164,19 +175,21 @@ export const ProductForm = () => {
             </>
           )}
 
-          {mode === "edit" ? (
-            <CustomBtn
-              disabled={isDisable}
-              handle={handleUpdate}
-              text="Update"
-            />
-          ) : (
-            <CustomBtn
-              disabled={isDisable}
-              handle={handleCreate}
-              text="Create"
-            />
-          )}
+          {mode === "edit"
+            ? (loading && <Spinner color="green.500" />) || (
+                <CustomBtn
+                  disabled={isDisable}
+                  handle={handleUpdate}
+                  text="Update"
+                />
+              )
+            : (loading && <Spinner color="green.500" />) || (
+                <CustomBtn
+                  disabled={isDisable}
+                  handle={handleCreate}
+                  text="Create"
+                />
+              )}
           <CancelCustomBtn
             disabled={isDisable}
             handle={handleCancel}
