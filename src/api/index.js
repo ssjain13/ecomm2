@@ -110,7 +110,7 @@ export const saveCategory = createAsyncThunk(
   "categories/save",
   async (category) => {
     try {
-      console.log(category);
+      
       const data = await fetch(`${backend_api}/saveCategory`, {
         method: "POST", // or 'PUT'
         headers: {

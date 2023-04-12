@@ -50,7 +50,7 @@ export const Pageheader = () => {
               mr="10px"
               mt="10px"
               mb="10px"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/")}
             >
               Login
             </Button>

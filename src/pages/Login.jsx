@@ -26,8 +26,9 @@ export const Login = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    dispatch(authenticate(credentials));
-    navigate("/dashboard");
+    dispatch(authenticate(credentials)).then(() => {
+      navigate("/dashboard");
+    });
   };
 
   return (

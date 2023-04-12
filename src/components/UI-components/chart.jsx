@@ -25,13 +25,8 @@ export const ChartCompo = () => {
   const [labels, setLabels] = useState([]);
   const [countData, setData] = useState([]);
   const initLabel = () => {
-    console.log(productCategoryMap);
     setLabels(Object.keys(productCategoryMap));
     setData(Object.values(productCategoryMap));
-
-    /* productCategoryMap.map((productCategory) => {
-      console.log(productCategory)
-    }); */
   };
   useEffect(() => {
     initLabel();

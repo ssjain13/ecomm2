@@ -34,7 +34,6 @@ export const productSlice = createSlice({
 
     deleteProductById: (state, action) => {
       state.loading = false;
-      console.log(action.payload);
       state.products = state.products.filter((i) => i.id !== action.payload);
     },
     updateProductAction: (state, action) => {
@@ -85,7 +84,7 @@ export const productSlice = createSlice({
     },
     [fetchProductsCount.fulfilled]: (state, action) => {
       state.loading = false;
-      state.productCategoryMap = action.payload
+      state.productCategoryMap = action.payload;
     },
     [fetchProductsCount.pending]: (state, action) => {
       state.productCategoryMap = [];
