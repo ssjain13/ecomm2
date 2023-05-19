@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const backend_api =
+export const backend_api =
   process.env.NODE_ENV === "production"
     ? process.env.REACT_APP_PROD_API_URL
     : process.env.REACT_APP_LOCAL_API_URL;
 
-export const authenticate = createAsyncThunk(
+export const login = createAsyncThunk(
   "user/login",
   async (credentials) => {
     try {
@@ -19,7 +19,7 @@ export const authenticate = createAsyncThunk(
       });
       if (!res.ok) {
         await res.json().then((data) => {
-          throw new Error(data.message);
+          throw Error(data.message);
         });
       }
       return res.json();
@@ -52,8 +52,8 @@ export const registerUser = createAsyncThunk("user/register", async (user) => {
       },
     });
     if (!res.ok) {
-      await res.json().then((data) => {
-        throw new Error(data.code);
+      await res.json().then((data) => {        
+        throw Error(data.message);
       });
     }
     return res.json();
@@ -110,7 +110,6 @@ export const saveCategory = createAsyncThunk(
   "categories/save",
   async (category) => {
     try {
-      
       const data = await fetch(`${backend_api}/saveCategory`, {
         method: "POST", // or 'PUT'
         headers: {

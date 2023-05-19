@@ -16,9 +16,9 @@ import { fetchProducts, fetchProductsCount } from "../api";
 import { ChartCompo } from "../components/UI-components/chart";
 
 export const AdminPage = () => {
-  
+
   const navigate = useNavigate();
-  const { error, loading , role} = useSelector((state) => state.user);
+  const { error, loading, role } = useSelector((state) => state.user);
 
   const categoriesState = useSelector((state) => state.categories);
   const productState = useSelector((state) => state.product);
@@ -57,7 +57,8 @@ export const AdminPage = () => {
             <Button onClick={viewProducts}>View Products</Button>
             <Button onClick={viewUsers}>View Users</Button>
           </ButtonGroup>
-          <ChartCompo />
+          <ChartCompo productCategoryMap={productState.productCategoryMap} loading={productState.loading
+          } />
         </>
       )}
       {error && (

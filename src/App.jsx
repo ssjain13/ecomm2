@@ -27,8 +27,8 @@ function App() {
   );
 
   useEffect(() => {
-    dispatch(fetchProducts());
-    dispatch(fetchCategories());
+   // dispatch(fetchProducts());
+   // dispatch(fetchCategories());
   }, []);
 
   return (
@@ -51,7 +51,7 @@ function App() {
             path="/viewUsers"
             element={<UserDashboard currentUser={userModel} users={userList} />}
           />
-          <Route path="/create" element={<Inventory />} />
+          <Route path="/create" element={<ProductForm />} />
           <Route path="/createCategory" element={<CategoryForm />} />
           <Route path="/product/edit" element={<ProductForm />} />
           <Route path="/category/edit" element={<CategoryForm />} />

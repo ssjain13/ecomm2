@@ -11,11 +11,11 @@ import {
 
 import { useState } from "react";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 import { CancelCustomBtn, CustomBtn } from "../../UI-components/CustomBtn";
 import { BiCaretDown } from "react-icons/bi";
-import { saveProduct, updateProduct } from "../../../api";
+import { fetchCategories, saveProduct, updateProduct } from "../../../api";
 
 const initialState = {
   id: "",
@@ -35,6 +35,7 @@ export const ProductForm = () => {
   const [isDisable, setIsDisable] = useState(false);
 
   const formData = new FormData();
+  const dispatch = useDispatch();
 
   const data = location.state;
   const [product, setProduct] = useState(
@@ -50,8 +51,6 @@ export const ProductForm = () => {
       setProduct(product);
     }
   }, []);
-
-  const dispatch = useDispatch();
 
   const handleCreate = () => {
     formData.append("data", JSON.stringify(product));

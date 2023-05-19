@@ -20,8 +20,10 @@ export const options = {
 };
 Chart.register(CategoryScale);
 
-export const ChartCompo = () => {
-  const { productCategoryMap, loading } = useSelector((state) => state.product);
+export const ChartCompo = ({ productCategoryMap, loading }) => {
+
+
+
   const [labels, setLabels] = useState([]);
   const [countData, setData] = useState([]);
   const initLabel = () => {

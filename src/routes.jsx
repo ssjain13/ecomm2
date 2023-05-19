@@ -28,7 +28,7 @@ export default () => {
 
       <Route path="/viewCategories" element={<CategoryDashboard />} />
 
-      <Route path="/create" element={<Inventory />} />
+      <Route path="/create" element={<ProductForm />} />
       <Route path="/createCategory" element={<CategoryForm />} />
       <Route path="/product/edit" element={<ProductForm />} />
       <Route path="/category/edit" element={<CategoryForm />} />

@@ -10,7 +10,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "preview": "vite preview",
-    "start": "concurrently \"npm run dev\" \"cd server && npm run start\""
+    "start": "concurrently \"npm run dev\" \"cd server && npm run start\"",
+    "test":"nyc --reporter=html --reporter=text mocha --recursive 'test/**/*'"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.15",

@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authenticate, fetchAllUsers, registerUser, signout } from "../api";
+import { login, fetchAllUsers, registerUser, signout } from "../api";
+import {
+  deleteAccount,
+  disableAccount,
+  enableAccount,
+} from "../api/user.actions";
 
 const userModel = {
   token: "",
@@ -9,12 +14,11 @@ const userModel = {
   uid: "",
   phone: "",
   email: "",
+  accountStatus: "",
 };
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    username: "",
-    password: "",
     role: "user",
     isSuccess: true,
     isAuthenticated: false,
@@ -23,88 +27,90 @@ const userSlice = createSlice({
     userModel,
     userList: [],
   },
-  extraReducers: {
-    [authenticate.fulfilled]: (state, action) => {
-      state.userModel = action.payload;
-      state.isSuccess = true;
-      state.role = "admin";
-      state.error = "";
-      state.loading = false;
-      state.isAuthenticated = true;
-      localStorage.clear();
-      localStorage.setItem("user-token", action.payload.uid);
-    },
-    [authenticate.rejected]: (state, action) => {
-      state.isSuccess = false;
-      state.loading = false;
-      state.error = action.error.message;
-      state.isAuthenticated = false;
-    },
-    [authenticate.pending]: (state, action) => {
-      state.loading = true;
-      state.isSuccess = false;
-      state.error = "";
-      state.isAuthenticated = false;
-    },
-    [signout.fulfilled]: (state, action) => {
-      state.userModel = [];
-      state.userList = [];
-      state.isSuccess = true;
-      state.role = "";
-      state.error = "";
-      state.loading = false;
-      state.isAuthenticated = false;
-      localStorage.clear();
-    },
-    [signout.rejected]: (state, action) => {
-      state.isSuccess = false;
-      state.loading = false;
-      state.error = action.error.message;
-    },
-    [signout.pending]: (state, action) => {
-      state.loading = true;
-      state.isSuccess = false;
-      state.error = "";
-      state.isAuthenticated = false;
-    },
 
-    [registerUser.pending]: (state, action) => {
-      state.loading = true;
-      state.isSuccess = false;
-      state.error = "";
-    },
-    [registerUser.rejected]: (state, action) => {
-      state.isSuccess = false;
-      state.loading = false;
-      state.error = action.error.message;
-    },
-    [registerUser.fulfilled]: (state, action) => {
-      state.token = action.payload.token;
-      state.isSuccess = true;
-      //state.role = "admin";
-      state.error = "";
-      state.email = action.payload.email;
-      state.displayName = action.payload.displayName;
-      state.loading = false;
-    },
-    [fetchAllUsers.fulfilled]: (state, action) => {
-      state.userList = action.payload;
-      state.loading = false;
-      state.error = false;
-    },
-
-    [fetchAllUsers.pending]: (state, action) => {
-      state.userList = [];
-      state.loading = true;
-      state.error = false;
-    },
-
-    [fetchAllUsers.rejected]: (state, action) => {
-      state.isSuccess = false;
-      state.loading = false;
-      state.error = action.error.message;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(login.fulfilled, (state, action) => {
+        state.userModel = action.payload;
+        state.role = "admin";
+        state.isAuthenticated = true;
+        localStorage.clear();
+        localStorage.setItem("user-token", action.payload.uid);
+        setSuccessParams(state);
+      })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        state.userList = action.payload;
+        setSuccessParams(state);
+      })
+      .addCase(deleteAccount.fulfilled, (state, action) => {
+        setSuccessParams(state);
+        state.userList = state.userList.filter(
+          (user) => user.uid !== action.payload.uid
+        );
+      })
+      .addCase(disableAccount.fulfilled, (state, action) => {
+        setSuccessParams(state);
+        state.userList = state.userList.map((user) => {
+          if (user.uid === action.payload.uid) {
+            return { ...user, disabled: true };
+          } else return user;
+        });
+      })
+      .addCase(enableAccount.fulfilled, (state, action) => {
+        setSuccessParams(state);
+        state.userList = state.userList.map((user) => {
+          if (user.uid === action.payload.uid) {
+            return { ...user, disabled: false };
+          } else return user;
+        });
+      })
+      .addMatcher(
+        (action) =>
+          action.type.includes("signout/fulfilled") ||
+          action.type.includes("registerUser/fulfilled"),
+        (state) => {
+          setSuccessParams(state);
+          state.userModel = [];
+          state.userList = [];
+          state.role = "";
+          state.isAuthenticated = false;
+          localStorage.clear();
+        }
+      )
+      .addMatcher(
+        (action) => action.type.includes("login/pending"),
+        (state) => {
+          state.loading = true;
+        }
+      )
+      .addMatcher(
+        (action) =>
+          [
+            login.rejected,
+            signout.rejected,
+            registerUser.rejected,
+            fetchAllUsers.rejected,
+            disableAccount.rejected,
+            enableAccount.rejected,
+            deleteAccount.rejected,
+          ].includes(action.type),
+        (state) => {
+          setFailureParams(action, state.error.message);
+        }
+      );
   },
 });
+
+const setSuccessParams = (state) => {
+  state.success = true;
+  state.loading = false;
+  state.error = false;
+};
+
+const setFailureParams = (state, error) => {
+  state.success = false;
+  state.loading = false;
+  state.error = error;
+};
 
 export default userSlice.reducer;
