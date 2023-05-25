@@ -15,8 +15,8 @@ import { login, fetchCategories, fetchProducts } from "../api";
 
 export const Login = () => {
   const [credentials, setCredentials] = useState({
-    username: "herif75903@saeoil.com",
-    password: "hello@1234",
+    username: "",
+    password: "",
   });
   const { loading } = useSelector((state) => state.user);
   const navigate = useNavigate();

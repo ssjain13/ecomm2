@@ -12,11 +12,10 @@ import {
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { fetchProducts, fetchProductsCount } from "../api";
+import {  fetchProductsCount } from "../api";
 import { ChartCompo } from "../components/UI-components/chart";
 
 export const AdminPage = () => {
-
   const navigate = useNavigate();
   const { error, loading, role } = useSelector((state) => state.user);
 
@@ -57,8 +56,10 @@ export const AdminPage = () => {
             <Button onClick={viewProducts}>View Products</Button>
             <Button onClick={viewUsers}>View Users</Button>
           </ButtonGroup>
-          <ChartCompo productCategoryMap={productState.productCategoryMap} loading={productState.loading
-          } />
+          <ChartCompo
+            productCategoryMap={productState.productCategoryMap}
+            loading={productState.loading}
+          />
         </>
       )}
       {error && (

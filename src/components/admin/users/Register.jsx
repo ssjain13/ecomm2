@@ -9,11 +9,7 @@ export const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [password, setPassword] = useState("");
   const [passwordScore, setPasswordScore] = useState(0);
-  const [user, setUser] = useState({
-    displayName: "myUser",
-    email: "sakjhj@djhf",
-    password: "Hello@1234",
-  });
+  const [user, setUser] = useState({});
   const toast = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();

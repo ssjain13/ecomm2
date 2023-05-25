@@ -21,9 +21,6 @@ export const options = {
 Chart.register(CategoryScale);
 
 export const ChartCompo = ({ productCategoryMap, loading }) => {
-
-
-
   const [labels, setLabels] = useState([]);
   const [countData, setData] = useState([]);
   const initLabel = () => {
@@ -32,7 +29,7 @@ export const ChartCompo = ({ productCategoryMap, loading }) => {
   };
   useEffect(() => {
     initLabel();
-  }, []);
+  }, [productCategoryMap]);
   const data = {
     labels: labels,
     datasets: [
@@ -53,7 +50,7 @@ export const ChartCompo = ({ productCategoryMap, loading }) => {
   return (
     <>
       {loading && <Progress size="xs" isIndeterminate mt={"30px"} />}
-      {!loading && <Bar options={options} data={data} />}
+      {!loading && data && <Bar options={options} data={data} />}
     </>
   );
 };

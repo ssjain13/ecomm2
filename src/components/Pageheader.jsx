@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { FaShoppingCart, FaHome } from "react-icons/fa";
+import {  FaHome } from "react-icons/fa";
 import { BiLogIn, BiLogOut } from "react-icons/bi";
 import { HiUserPlus } from "react-icons/hi2";
 
@@ -19,7 +19,6 @@ import { IconButton } from "./UI-components/IconButton";
 import { signout } from "../api";
 
 export const Pageheader = () => {
-  let location = useLocation();
 
   const navigate = useNavigate();
   const { userModel, isAuthenticated } = useSelector((state) => state.user);
