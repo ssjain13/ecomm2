@@ -4,14 +4,12 @@ import {
   CardBody, Image, Text, WrapItem
 } from "@chakra-ui/react";
 import React from "react";
-import { useDispatch } from "react-redux";
 import { CartBtn } from "./cartBtn";
 
 
 
 export const Item = ({ product }) => {
   
-  const dispatch = useDispatch();
 
 
 

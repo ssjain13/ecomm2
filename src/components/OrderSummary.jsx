@@ -1,21 +1,38 @@
 import {
   Box,
-  Button, Card,
+  Button,
+  Card,
   CardBody,
-  CardFooter, Flex, Text
+  CardFooter,
+  Flex,
+  Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { OrderItems } from "./orderItems";
-
+import { useEffect } from "react";
 
 export const OrderSummary = ({ setAccordionProps }) => {
   const { billingInfo } = useSelector((state) => state.billing);
+
+  const [amount, setAmount] = useState(0);
 
   const calculateDiscount = () => {
     const str = `${billingInfo.items.length}`;
     return Math.round((billingInfo.discount / 100) * billingInfo.total);
   };
+
+  const totalAmount = (billingInfo) => {
+    const tAmount = Math.round(
+      billingInfo.total - (billingInfo.discount / 100) * billingInfo.total
+    );
+
+    return tAmount;
+  };
+
+  useEffect(() => {
+    setAmount(totalAmount(billingInfo));
+  }, []);
   return (
     <Box>
       <Text fontSize={"2xl"} mb="10px">
@@ -35,10 +52,7 @@ export const OrderSummary = ({ setAccordionProps }) => {
           <Flex justifyContent={"space-between"}>
             <Text fontSize={"xl"}>Total Amount</Text>
             <Text fontSize={"xl"} fontWeight="bold">
-              {Math.round(
-                billingInfo.total -
-                  (billingInfo.discount / 100) * billingInfo.total
-              )}
+              {amount}
             </Text>
           </Flex>
         </CardBody>
@@ -52,6 +66,7 @@ export const OrderSummary = ({ setAccordionProps }) => {
                   isSummary: false,
                   isPayment: false,
                   accordionIndex: 2,
+                  amount: amount,
                 }));
               }}
             >

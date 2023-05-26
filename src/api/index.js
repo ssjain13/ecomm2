@@ -7,31 +7,28 @@ export const backend_api =
     ? process.env.REACT_APP_PROD_API_URL
     : process.env.REACT_APP_LOCAL_API_URL;
 
-export const login = createAsyncThunk(
-  "user/login",
-  async (credentials) => {
-    try {
-      const res = await fetch(`${backend_api}/login`, {
-        method: "POST",
-        body: JSON.stringify(credentials),
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      if (!res.ok) {
-        await res.json().then((data) => {
-          throw new Error(data.message);
-        });
-      }
-      return res.json();
-    } catch (err) {
-      return new Promise((resolve, reject) => {
-        reject(err);
+export const login = createAsyncThunk("user/login", async (credentials) => {
+  try {
+    const res = await fetch(`${backend_api}/login`, {
+      method: "POST",
+      body: JSON.stringify(credentials),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    if (!res.ok) {
+      await res.json().then((data) => {
+        throw new Error(data.message);
       });
     }
+    return res.json();
+  } catch (err) {
+    return new Promise((resolve, reject) => {
+      reject(err);
+    });
   }
-);
+});
 export const fetchAllUsers = createAsyncThunk(
   "users/fetchAllUsers",
   async () => {
@@ -238,6 +235,22 @@ export const signout = createAsyncThunk("user/signout", async (user) => {
     });
   return res;
 });
+
+export const makePayment = async (order) => {
+  try {
+    const data = await fetch(`${backend_api}/makePayment`, {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(order),
+    });
+    return await data.json();
+  } catch (err) {
+    return err;
+  }
+};
 
 export const checkout = async (product) => {
   try {

@@ -24,7 +24,7 @@ export const ShoppingAccordion = () => {
   const [accordionProps, setAccordionProps] = useState(setAttr);
 
   const { cartItems } = useSelector((state) => state.cart);
-  console.log(accordionProps);
+
   return (
     cartItems.length > 0 && (
       <Accordion allowToggle width="85%" index={accordionProps.accordionIndex}>
@@ -65,7 +65,7 @@ export const ShoppingAccordion = () => {
             </AccordionButton>
           </h2>
           <AccordionPanel pb={4}>
-            <Payment />
+            <Payment cartItems={cartItems} accordionProps={accordionProps} />
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
