@@ -1,4 +1,12 @@
-import { Flex, Button, Text, Heading, Box, Spacer, ButtonGroup } from "@chakra-ui/react";
+import {
+  Flex,
+  Button,
+  Text,
+  Heading,
+  Box,
+  Spacer,
+  ButtonGroup,
+} from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { FaShoppingCart, FaHome } from "react-icons/fa";
@@ -7,19 +15,20 @@ import { HiUserPlus } from "react-icons/hi2";
 
 import "../styles/main.style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../redux/user";
+
 import { IconButton } from "./UI-components/IconButton";
+import { signout } from "../api";
 
 export const Pageheader = () => {
   let location = useLocation();
 
   const navigate = useNavigate();
-  const { userModel } = useSelector((state) => state.user);
+  const { userModel, isAuthenticated } = useSelector((state) => state.user);
 
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const handleLogout = () => {
-    dispatch(logoutUser());
+    dispatch(signout());
     navigate("/login");
   };
 
@@ -36,7 +45,7 @@ export const Pageheader = () => {
       </Heading>
       <Spacer />
       <ButtonGroup gap="2">
-        {location.pathname !== "/admin" && (
+      {!isAuthenticated && (
           <>
             <Button
               leftIcon={<BiLogIn />}
@@ -59,7 +68,7 @@ export const Pageheader = () => {
           </>
         )}
 
-        {location.pathname === "/admin" && (
+        {isAuthenticated && (
           <Flex alignItems={"center"}>
             <Box mr="10px">
               <Text>Welcome {userModel.displayName}</Text>

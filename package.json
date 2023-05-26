@@ -1,16 +1,16 @@
 {
-  "name": "todo-app",
+  "name": "ecommerce",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://ssjain13.github.io/ecomm2",
+  "homepage": "https://ssjain13.github.io/main",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "preview": "vite preview",
-    "start": "concurrently \"npm run dev\" \"cd ../server && npm run start\""
+    "start": "concurrently \"npm run dev\" \"cd server && npm run start\""
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.15",

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authenticate, registerUser } from "../api";
+import { login, fetchAllUsers, registerUser, signout } from "../api";
 
 const userModel = {
   token: "",
@@ -9,66 +9,78 @@ const userModel = {
   uid: "",
   phone: "",
   email: "",
+  accountStatus: "",
 };
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    username: "",
-    password: "",
     role: "user",
-    isSuccess: false,
+    isSuccess: true,
+    isAuthenticated: false,
     error: "",
-    loading: true,
+    loading: false,
     userModel,
+    userList: [],
   },
-  reducers: {
-    logoutUser: (state, action) => {
-      (state.password = ""),
-        (state.username = ""),
-        (state.role = ""),
-        (state.isSuccess = "false");
-    },
-  },
-  extraReducers: {
-    [authenticate.fulfilled]: (state, action) => {
-      state.userModel = action.payload;
-      state.isSuccess = true;
-      state.role = "admin";
-      state.error = "";
-      state.loading = false;
-    },
-    [authenticate.rejected]: (state, action) => {
-      state.isSuccess = false;
-      state.loading = false;
-      state.error = action.error.message;
-    },
-    [authenticate.pending]: (state, action) => {
-      state.loading = true;
-      state.isSuccess = false;
-      state.error = "";
-    },
-    [registerUser.pending]: (state, action) => {
-      state.loading = true;
-      state.isSuccess = false;
-      state.error = "";
-    },
-    [registerUser.rejected]: (state, action) => {
-      state.isSuccess = false;
-      state.loading = false;
-      state.error = action.error.message;
-    },
-    [registerUser.fulfilled]: (state, action) => {
-      state.token = action.payload.token;
-      state.isSuccess = true;
-      //state.role = "admin";
-      state.error = "";
-      state.email = action.payload.email;
-      state.displayName = action.payload.displayName;
-      state.loading = false;
-    },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(login.fulfilled, (state, action) => {
+        state.userModel = action.payload;
+        state.role = "admin";
+        state.isAuthenticated = true;
+        localStorage.clear();
+        localStorage.setItem("user-token", action.payload.uid);
+        setSuccessParams(state);
+      })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        state.userList = action.payload;
+        setSuccessParams(state);
+      })
+      .addMatcher(
+        (action) =>
+          action.type.includes("signout/fulfilled") ||
+          action.type.includes("registerUser/fulfilled"),
+        (state) => {
+          setSuccessParams(state);
+          state.userModel = [];
+          state.userList = [];
+          state.role = "";
+          state.isAuthenticated = false;
+          localStorage.clear();
+        }
+      )
+      .addMatcher(
+        (action) => action.type.includes("login/pending"),
+        (state) => {
+          state.loading = true;
+        }
+      )
+      .addMatcher(
+        (action) =>
+          [
+            login.rejected,
+            signout.rejected,
+            registerUser.rejected,
+            fetchAllUsers.rejected,
+          ].includes(action.type),
+        (state) => {
+          setFailureParams(action, state.error.message);
+        }
+      );
   },
 });
 
-export const { logoutUser } = userSlice.actions;
+const setSuccessParams = (state) => {
+  state.success = true;
+  state.loading = false;
+  state.error = false;
+};
+
+const setFailureParams = (state, error) => {
+  state.success = false;
+  state.loading = false;
+  state.error = error;
+};
 
 export default userSlice.reducer;

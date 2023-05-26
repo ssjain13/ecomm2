@@ -16,16 +16,16 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 
-import "../../styles/admin.style.css";
+import "../styles/admin.style.css";
 
 import { useDispatch, useSelector } from "react-redux";
-import { data } from "../../model/product.json";
-import { stock } from "../../model/stock.json";
+import { data } from "../model/product.json";
+import { stock } from "../model/stock.json";
 
 import { CiEdit } from "react-icons/ci";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router";
-import { deleteProduct, fetchProducts } from "../../api";
+import { deleteProduct, fetchProducts } from "../api";
 
 export const Dashboard = ({ categories }) => {
   const { title, category, price, rating } = data;

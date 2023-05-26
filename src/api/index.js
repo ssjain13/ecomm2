@@ -2,10 +2,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const baseURL = "https://fakestoreapi.com";
 
-const backend_api = process.env.PROD_URL;
-//const backend_api = "http://localhost:3030";
+export const backend_api =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_PROD_API_URL
+    : process.env.REACT_APP_LOCAL_API_URL;
 
-export const authenticate = createAsyncThunk(
+export const login = createAsyncThunk(
   "user/login",
   async (credentials) => {
     try {
@@ -27,6 +29,19 @@ export const authenticate = createAsyncThunk(
       return new Promise((resolve, reject) => {
         reject(err);
       });
+    }
+  }
+);
+export const fetchAllUsers = createAsyncThunk(
+  "users/fetchAllUsers",
+  async () => {
+    try {
+      const users = await fetch(`${backend_api}/fetchAllUsers`).then((res) => {
+        return res.json();
+      });
+      return users;
+    } catch (err) {
+      return err;
     }
   }
 );
@@ -213,6 +228,16 @@ export const fetchCategories = createAsyncThunk(
     }
   }
 );
+export const signout = createAsyncThunk("user/signout", async (user) => {
+  const res = await fetch(`${backend_api}/signout`)
+    .then((data) => {
+      return data.json();
+    })
+    .catch((err) => {
+      return err;
+    });
+  return res;
+});
 
 export const checkout = async (product) => {
   try {

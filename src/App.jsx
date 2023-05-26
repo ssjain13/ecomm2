@@ -8,15 +8,11 @@ import { Pageheader } from "./components/Pageheader";
 import { ProductGrid } from "./components/ProductGrid";
 import { ShoppingAccordion } from "./components/ShoppingAccordion";
 import { ShoppingCart } from "./components/ShoppingCart";
-import { AdminPage } from "./pages/AdminPage";
+
 import { Login } from "./pages/Login";
 import { SuccessPage } from "./pages/SuccessPage";
-import { Inventory } from "./pages/Inventory";
-import { ProductForm } from "./components/admin/ProductForm";
-import { CategoryForm } from "./components/admin/CategoryForm";
-import { Dashboard } from "./components/admin/Dashboard";
-import { CategoryDashboard } from "./components/admin/CategoryDashboard";
-import { Register } from "./components/admin/Register";
+
+import { Register } from "./components/user/Register";
 
 function App() {
   const selectorData = useSelector((state) => state.categories);
@@ -40,24 +36,9 @@ function App() {
           <Route path="/checkout" element={<ShoppingAccordion />}></Route>
         )}
         <Route path="/success" element={<SuccessPage />} />
-        <Route path="/admin" element={<AdminPage />}></Route>
-        <Route
-          path="/viewProducts"
-          element={<Dashboard categories={selectorData.categories} />}
-        />
-
-        <Route
-          path="/viewCategories"
-          element={<CategoryDashboard categories={selectorData.categories} />}
-        />
-
-        <Route path="/create" element={<Inventory />} />
-        <Route path="/createCategory" element={<CategoryForm />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/product/edit" element={<ProductForm />} />
-        <Route path="/category/edit" element={<CategoryForm />} />
 
         <Route
           path="/"
